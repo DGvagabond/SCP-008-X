@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCP008X", "SCP008X.csproj", "{606F40C9-8CFD-4C43-B551-D7305BA0F303}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Debug|x64.ActiveCfg = Debug|x64
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Debug|x64.Build.0 = Debug|x64
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Release|x64.ActiveCfg = Release|x64
+		{606F40C9-8CFD-4C43-B551-D7305BA0F303}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2279B4C7-88F7-4D3F-8B88-C613350A848B}
+	EndGlobalSection
+EndGlobal
