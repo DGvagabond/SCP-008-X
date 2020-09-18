@@ -11,10 +11,6 @@ namespace SCP008X.Handlers
         public System.Random Gen = new System.Random();
         public Plugin plugin;
         public Player(Plugin plugin) => this.plugin = plugin;
-        private List<ItemType> weapons = new List<ItemType>
-        {
-            ItemType.GunCOM15,ItemType.GunE11SR,ItemType.GunLogicer,ItemType.GunMP7,ItemType.GunProject90,ItemType.GunUSP
-        };
 
         public void OnPlayerJoin(JoinedEventArgs ev)
         {
@@ -79,19 +75,14 @@ namespace SCP008X.Handlers
         {
             if (ev.NewRole == RoleType.Scp0492)
             {
-                if(ev.Player.CurrentItem.id.Gun())
-                {
-                    ev.Player.Inventory.ServerDropAll();
-                }
+                if (ev.Player.CurrentItem.id.Gun()) { ev.Player.Inventory.ServerDropAll(); }
                 if(Plugin.Instance.Config.SuicideBroadcast != null)
+                {
                     ev.Player.ClearBroadcasts();
                     ev.Player.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
-                if (!Plugin.Instance.Config.RetainInventory)
-                    ev.Player.ClearInventory();
-                if (Plugin.Instance.Config.Scp008Buff >= 0)
-                {
-                    ev.Player.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff;
                 }
+                if (!Plugin.Instance.Config.RetainInventory) { ev.Player.ClearInventory(); }
+                if (Plugin.Instance.Config.Scp008Buff >= 0) { ev.Player.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
                 ev.Player.Health = Plugin.Instance.Config.ZombieHealth;
                 ev.Player.ShowHint($"{Plugin.Instance.Config.SpawnHint}");
                 return;
@@ -105,6 +96,17 @@ namespace SCP008X.Handlers
                 ev.IsAllowed = false;
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
             }
+        }
+        public void OnRevived(FinishingRecallEventArgs ev)
+        {
+            if (Plugin.Instance.Config.SuicideBroadcast != null)
+            {
+                ev.Target.ClearBroadcasts();
+                ev.Target.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
+            }
+            if (Plugin.Instance.Config.Scp008Buff >= 0) { ev.Target.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
+            ev.Target.Health = Plugin.Instance.Config.ZombieHealth;
+            ev.Target.ShowHint($"{Plugin.Instance.Config.SpawnHint}");
         }
 
         private void ClearSCP008(User player)
