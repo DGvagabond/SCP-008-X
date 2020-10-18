@@ -10,6 +10,8 @@ namespace SCP008X
         public int CureChance { get; set; } = 50;
         [Description("Toggle players getting infected via area of effect")]
         public bool AoeInfection { get; set; } = false;
+        [Description("Set AOE infection to run when infected players turn?")]
+        public bool AoeTurned { get; set; } = false;
         [Description("Set the percentage chance players will get infected by area of effect")]
         public int AoeChance { get; set; } = 50;
         [Description("Allow SCP-049 to instantly revive targets?")]
