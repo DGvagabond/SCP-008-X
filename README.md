@@ -1,13 +1,15 @@
 # SCP-008-X
 An EXILED 2.0.x plugin for SCP:SL that adds SCP-008 into the game. This is fundamentally for server hosts that want to add more a enganging SCP-049-2 experience for their players.
 ## How does it work?
-It will give **SCP-049-2** the ability to infect it's targets on hit. The targets will receive the `Poisoned` status effect. In order to cure the infection, you must either use `SCP-500` for a guaranteed success or gamble with a `Medkit`'s 50% chance cure rate (This chance is configurable). Players that die while being `Poisoned` will spawn as SCP-049-2 as well.
+It will give **SCP-049-2** the ability to infect it's targets on hit. The targets will receive the `Poisoned` status effect. In order to cure the infection, you must either use `SCP-500` for a guaranteed success or gamble with a `Medkit`'s 50% chance cure rate. Players that die while being `Poisoned` will spawn as SCP-049-2 as well.
 # Config Options
 | Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | is_enabled | bool | Toggles the plugin | true |
 | infection_chance | int | Percentage chance of infection | 25% |
 | cure_chance | int | Percentage chance of being cured when using a medkit | 50% |
+| aoe_infection | bool | Toggles infecting players near recently turned zombies | false |
+| aoe_chance | int | Percentage chance of players near recently turned zombies being infected | 50% |
 | buff_doctor | bool | Enable instant revives for SCP-049 | false |
 | zombie_health | int | Amount of health infected zombies spawn with | 300 |
 | scp008_buff | int | Amount of AHP zombies spawn with and gain on each hit | 10 |
