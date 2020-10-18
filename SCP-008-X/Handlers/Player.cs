@@ -84,6 +84,21 @@ namespace SCP008X.Handlers
                 if (Plugin.Instance.Config.Scp008Buff >= 0) { ev.Player.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
                 ev.Player.Health = Plugin.Instance.Config.ZombieHealth;
                 ev.Player.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.SpawnHint}", 20f);
+                if (Plugin.Instance.Config.AoeTurned)
+                {
+                    IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == ev.Player.CurrentRoom);
+                    targets = targets.Where(x => x.UserId != ev.Player.UserId);
+                    List<User> infecteds = targets.ToList();
+                    if (infecteds.Count == 0) return;
+                    foreach (User ply in infecteds)
+                    {
+                        int chance = Gen.Next(1, 100);
+                        if (chance <= Plugin.Instance.Config.AoeChance && ply.Team != Team.SCP)
+                        {
+                            Infect(ply);
+                        }
+                    }
+                }
                 return;
             }
             if (ev.NewRole != RoleType.Scp0492 || ev.NewRole != RoleType.Scp096) { ClearSCP008(ev.Player); ev.Player.AdrenalineHealth = 0; }
@@ -116,7 +131,7 @@ namespace SCP008X.Handlers
                     Cassie.Message($"SCP 0 0 8 containedsuccessfully . noscpsleft", false, true);
                 }
             }
-            if(Plugin.Instance.Config.AoeInfection)
+            if(Plugin.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
             {
                 IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == ev.Target.CurrentRoom);
                 targets = targets.Where(x => x.UserId != ev.Target.UserId);
