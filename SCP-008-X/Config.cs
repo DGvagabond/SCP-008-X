@@ -8,6 +8,10 @@ namespace SCP008X
         public bool IsEnabled { get; set; } = true;
         public int InfectionChance { get; set; } = 100;
         public int CureChance { get; set; } = 50;
+        [Description("Toggle players getting infected via area of effect")]
+        public bool AoeInfection { get; set; } = false;
+        [Description("Set the percentage chance players will get infected by area of effect")]
+        public int AoeChance { get; set; } = 50;
         [Description("Allow SCP-049 to instantly revive targets?")]
         public bool BuffDoctor { get; set; } = false;
         public int ZombieHealth { get; set; } = 300;
