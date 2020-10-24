@@ -5,6 +5,10 @@ using SCP008X.Components;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
+using Exiled.Loader;
+using scp035.API;
+using SerpentsHand.API;
+using System;
 
 namespace SCP008X.Handlers
 {
@@ -13,6 +17,7 @@ namespace SCP008X.Handlers
         public Plugin plugin;
         public Player(Plugin plugin) => this.plugin = plugin;
         private System.Random Gen = new System.Random();
+        private User TryGet035() => Scp035Data.GetScp035();
 
         public void OnPlayerJoin(JoinedEventArgs ev)
         {
@@ -156,6 +161,28 @@ namespace SCP008X.Handlers
         }
         private void Infect(User target)
         {
+            bool is035 = false;
+            bool isSH = false;
+            try
+            {
+                is035 = target.Id == TryGet035()?.Id;
+            }
+            catch (Exception e)
+            {
+                Log.Debug($"SCP-035 is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+            }
+            try
+            {
+                var check = SerpentsHand.EventHandlers.shPlayers.Select(x => User.Get(target.UserId));
+                if (check.Count() != 0)
+                    isSH = true;
+            }
+            catch (Exception e)
+            {
+                Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+            }
+            if (is035) return;
+            if (isSH) return;
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.InfectionAlert}", 10f);
         }
