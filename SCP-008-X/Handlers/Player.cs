@@ -16,7 +16,9 @@ namespace SCP008X.Handlers
     {
         public Plugin plugin;
         public Player(Plugin plugin) => this.plugin = plugin;
-        private System.Random Gen = new System.Random();
+        private Random Gen = new Random();
+        private bool is035 { get; set; }
+        private bool isSH { get; set; }
         private User TryGet035() => Scp035Data.GetScp035();
 
         public void OnPlayerJoin(JoinedEventArgs ev)
@@ -29,6 +31,33 @@ namespace SCP008X.Handlers
         }
         public void OnPlayerHurt(HurtingEventArgs ev)
         {
+            try
+            {
+                if (ev.Target.UserId == TryGet035().UserId)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+
+                Log.Debug($"SCP-035 is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+            }
+            try
+            {
+                var check = SerpentsHand.EventHandlers.shPlayers.Select(x => User.Get(ev.Target.UserId));
+                if (check.Count() != 0)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+
+                Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+            }
             SCP008BuffComponent comp = ev.Attacker.GameObject.GetComponent<SCP008BuffComponent>();
             if(comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
             if (ev.Target != ev.Attacker && ev.Attacker.Role == RoleType.Scp0492)
@@ -75,36 +104,19 @@ namespace SCP008X.Handlers
             }
             if (ev.Target.Role == RoleType.Scp0492) { ClearSCP008(ev.Target); }
         }
+        public void On330Pickup(PickingUpScp330EventArgs ev)
+        {
+            if(ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled && ev.IsSevere)
+            {
+                ev.IsAllowed = false;
+                Turn(ev.Player);
+            }
+        }
         public void OnRoleChange(ChangingRoleEventArgs ev)
         {
             if (ev.NewRole == RoleType.Scp0492)
             {
-                if (ev.Player.CurrentItem.id.Gun()) { ev.Player.Inventory.ServerDropAll(); }
-                if(Plugin.Instance.Config.SuicideBroadcast != null)
-                {
-                    ev.Player.ClearBroadcasts();
-                    ev.Player.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
-                }
-                if (!Plugin.Instance.Config.RetainInventory) { ev.Player.ClearInventory(); }
-                if (Plugin.Instance.Config.Scp008Buff >= 0) { ev.Player.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
-                ev.Player.Health = Plugin.Instance.Config.ZombieHealth;
-                ev.Player.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.SpawnHint}", 20f);
-                if (Plugin.Instance.Config.AoeTurned)
-                {
-                    IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == ev.Player.CurrentRoom);
-                    targets = targets.Where(x => x.UserId != ev.Player.UserId);
-                    List<User> infecteds = targets.ToList();
-                    if (infecteds.Count == 0) return;
-                    foreach (User ply in infecteds)
-                    {
-                        int chance = Gen.Next(1, 100);
-                        if (chance <= Plugin.Instance.Config.AoeChance && ply.Team != Team.SCP)
-                        {
-                            Infect(ply);
-                        }
-                    }
-                }
-                return;
+                Turn(ev.Player);
             }
             if (ev.NewRole != RoleType.Scp0492 || ev.NewRole != RoleType.Scp096) { ClearSCP008(ev.Player); ev.Player.AdrenalineHealth = 0; }
         }
@@ -161,11 +173,9 @@ namespace SCP008X.Handlers
         }
         private void Infect(User target)
         {
-            bool is035 = false;
-            bool isSH = false;
             try
             {
-                is035 = target.Id == TryGet035()?.Id;
+                if(target.UserId == TryGet035().UserId) is035=true;
             }
             catch (Exception e)
             {
@@ -185,6 +195,35 @@ namespace SCP008X.Handlers
             if (isSH) return;
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.InfectionAlert}", 10f);
+        }
+        private void Turn(User target)
+        {
+            if (target.CurrentItem.id.Gun()) { target.Inventory.ServerDropAll(); }
+            if (Plugin.Instance.Config.SuicideBroadcast != null)
+            {
+                target.ClearBroadcasts();
+                target.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
+            }
+            if (!Plugin.Instance.Config.RetainInventory) { target.ClearInventory(); }
+            if (Plugin.Instance.Config.Scp008Buff >= 0) { target.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
+            target.Health = Plugin.Instance.Config.ZombieHealth;
+            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.SpawnHint}", 20f);
+            if (Plugin.Instance.Config.AoeTurned)
+            {
+                IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == target.CurrentRoom);
+                targets = targets.Where(x => x.UserId != target.UserId);
+                List<User> infecteds = targets.ToList();
+                if (infecteds.Count == 0) return;
+                foreach (User ply in infecteds)
+                {
+                    int chance = Gen.Next(1, 100);
+                    if (chance <= Plugin.Instance.Config.AoeChance && ply.Team != Team.SCP)
+                    {
+                        Infect(ply);
+                    }
+                }
+            }
+            return;
         }
         private bool EnvironmentalCheck(DyingEventArgs e)
         {
