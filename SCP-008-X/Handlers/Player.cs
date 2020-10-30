@@ -31,6 +31,11 @@ namespace SCP008X.Handlers
         }
         public void OnPlayerHurt(HurtingEventArgs ev)
         {
+            if (ev.Target.IPAddress == "127.0.0.1")
+            {
+                ev.IsAllowed = false;
+                return;
+            }
             try
             {
                 if (ev.Target.UserId == TryGet035().UserId)
