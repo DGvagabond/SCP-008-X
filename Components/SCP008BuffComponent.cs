@@ -62,9 +62,9 @@ namespace SCP008X.Components
                         ply.AdrenalineHealth = curAHP;
                     else
                     {
-                        if (ply.AdrenalineHealth >= Plugin.Instance.Config.MaxAhp)
+                        if (ply.AdrenalineHealth >= SCP008X.Instance.Config.MaxAhp)
                         {
-                            ply.AdrenalineHealth = Plugin.Instance.Config.MaxAhp;
+                            ply.AdrenalineHealth = SCP008X.Instance.Config.MaxAhp;
                         }
                         curAHP = ply.AdrenalineHealth;
                     }

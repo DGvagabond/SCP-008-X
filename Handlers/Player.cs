@@ -14,8 +14,8 @@ namespace SCP008X.Handlers
 {
     public class Player
     {
-        public Plugin plugin;
-        public Player(Plugin plugin) => this.plugin = plugin;
+        public SCP008X plugin;
+        public Player(SCP008X plugin) => this.plugin = plugin;
         private Random Gen = new Random();
         private bool is035 { get; set; }
         private bool isSH { get; set; }
@@ -67,12 +67,12 @@ namespace SCP008X.Handlers
             if(comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
             if (ev.Target != ev.Attacker && ev.Attacker.Role == RoleType.Scp0492)
             {
-                if (Plugin.Instance.Config.ZombieDamage >= 0)
-                    ev.Amount = Plugin.Instance.Config.ZombieDamage;
-                if (Plugin.Instance.Config.Scp008Buff >= 0)
-                    ev.Attacker.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff;
+                if (SCP008X.Instance.Config.ZombieDamage >= 0)
+                    ev.Amount = SCP008X.Instance.Config.ZombieDamage;
+                if (SCP008X.Instance.Config.Scp008Buff >= 0)
+                    ev.Attacker.AdrenalineHealth += SCP008X.Instance.Config.Scp008Buff;
                 int chance = Gen.Next(1, 100);
-                if (chance <= Plugin.Instance.Config.InfectionChance && ev.Target.Team != Team.SCP)
+                if (chance <= SCP008X.Instance.Config.InfectionChance && ev.Target.Team != Team.SCP)
                 {
                     Infect(ev.Target);
                 }
@@ -85,7 +85,7 @@ namespace SCP008X.Handlers
                 int cure = Gen.Next(1, 100);
                 if (ev.Item == ItemType.SCP500)
                     ev.Player.ReferenceHub.playerEffectsController.DisableEffect<Poisoned>();
-                if (ev.Item == ItemType.Medkit && cure <= Plugin.Instance.Config.CureChance)
+                if (ev.Item == ItemType.Medkit && cure <= SCP008X.Instance.Config.CureChance)
                 {
                     ev.Player.ReferenceHub.playerEffectsController.DisableEffect<Poisoned>();
                     return;
@@ -127,7 +127,7 @@ namespace SCP008X.Handlers
         }
         public void OnReviving(StartingRecallEventArgs ev)
         {
-            if(Plugin.Instance.Config.BuffDoctor)
+            if(SCP008X.Instance.Config.BuffDoctor)
             {
                 ev.IsAllowed = false;
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
@@ -135,14 +135,14 @@ namespace SCP008X.Handlers
         }
         public void OnRevived(FinishingRecallEventArgs ev)
         {
-            if (Plugin.Instance.Config.SuicideBroadcast != null)
+            if (SCP008X.Instance.Config.SuicideBroadcast != null)
             {
                 ev.Target.ClearBroadcasts();
-                ev.Target.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
+                ev.Target.Broadcast(10, SCP008X.Instance.Config.SuicideBroadcast);
             }
-            if (Plugin.Instance.Config.Scp008Buff >= 0) { ev.Target.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
-            ev.Target.Health = Plugin.Instance.Config.ZombieHealth;
-            ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.SpawnHint}", 20f);
+            if (SCP008X.Instance.Config.Scp008Buff >= 0) { ev.Target.AdrenalineHealth += SCP008X.Instance.Config.Scp008Buff; }
+            ev.Target.Health = SCP008X.Instance.Config.ZombieHealth;
+            ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.SpawnHint}", 20f);
         }
         public void OnPlayerDied(DiedEventArgs ev)
         {
@@ -153,7 +153,7 @@ namespace SCP008X.Handlers
                     Cassie.Message($"SCP 0 0 8 containedsuccessfully . noscpsleft", false, true);
                 }
             }
-            if(Plugin.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
+            if(SCP008X.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
             {
                 IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == ev.Target.CurrentRoom);
                 targets = targets.Where(x => x.UserId != ev.Target.UserId);
@@ -162,7 +162,7 @@ namespace SCP008X.Handlers
                 foreach (User ply in infecteds)
                 {
                     int chance = Gen.Next(1, 100);
-                    if (chance <= Plugin.Instance.Config.AoeChance && ply.Team != Team.SCP)
+                    if (chance <= SCP008X.Instance.Config.AoeChance && ply.Team != Team.SCP)
                     {
                         Infect(ply);
                     }
@@ -199,21 +199,21 @@ namespace SCP008X.Handlers
             if (is035) return;
             if (isSH) return;
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
-            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.InfectionAlert}", 10f);
+            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
         }
         private void Turn(User target)
         {
             if (target.CurrentItem.id.Gun()) { target.Inventory.ServerDropAll(); }
-            if (Plugin.Instance.Config.SuicideBroadcast != null)
+            if (SCP008X.Instance.Config.SuicideBroadcast != null)
             {
                 target.ClearBroadcasts();
-                target.Broadcast(10, Plugin.Instance.Config.SuicideBroadcast);
+                target.Broadcast(10, SCP008X.Instance.Config.SuicideBroadcast);
             }
-            if (!Plugin.Instance.Config.RetainInventory) { target.ClearInventory(); }
-            if (Plugin.Instance.Config.Scp008Buff >= 0) { target.AdrenalineHealth += Plugin.Instance.Config.Scp008Buff; }
-            target.Health = Plugin.Instance.Config.ZombieHealth;
-            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Plugin.Instance.Config.SpawnHint}", 20f);
-            if (Plugin.Instance.Config.AoeTurned)
+            if (!SCP008X.Instance.Config.RetainInventory) { target.ClearInventory(); }
+            if (SCP008X.Instance.Config.Scp008Buff >= 0) { target.AdrenalineHealth += SCP008X.Instance.Config.Scp008Buff; }
+            target.Health = SCP008X.Instance.Config.ZombieHealth;
+            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.SpawnHint}", 20f);
+            if (SCP008X.Instance.Config.AoeTurned)
             {
                 IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == target.CurrentRoom);
                 targets = targets.Where(x => x.UserId != target.UserId);
@@ -222,7 +222,7 @@ namespace SCP008X.Handlers
                 foreach (User ply in infecteds)
                 {
                     int chance = Gen.Next(1, 100);
-                    if (chance <= Plugin.Instance.Config.AoeChance && ply.Team != Team.SCP)
+                    if (chance <= SCP008X.Instance.Config.AoeChance && ply.Team != Team.SCP)
                     {
                         Infect(ply);
                     }
