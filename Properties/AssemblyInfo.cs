@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SCP008")]
+[assembly: AssemblyTitle("SCP008X")]
 [assembly: AssemblyDescription("An EXILED 2.0 plugin that adds SCP-008 to SCP:SL")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SCP008")]
+[assembly: AssemblyProduct("SCP-008-X")]
 [assembly: AssemblyCopyright("Copyright © DGvagabond 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
