@@ -10,24 +10,31 @@ using scp035.API;
 using SerpentsHand.API;
 using System;
 
-namespace SCP008X.Handlers
+namespace SCP008X
 {
-    public class Player
+    public class EventHandlers
     {
         public SCP008X plugin;
-        public Player(SCP008X plugin) => this.plugin = plugin;
+        public EventHandlers(SCP008X plugin) => this.plugin = plugin;
         private Random Gen = new Random();
         private bool is035 { get; set; }
         private bool isSH { get; set; }
         private User TryGet035() => Scp035Data.GetScp035();
 
+        public void OnRoundStart()
+        {
+            if (SCP008X.Instance.Config.CassieAnnounce && SCP008X.Instance.Config.Announcement != null)
+            {
+                Cassie.DelayedMessage(SCP008X.Instance.Config.Announcement, 5f, false, true);
+            }
+        }
         public void OnPlayerJoin(JoinedEventArgs ev)
         {
             ev.Player.SendConsoleMessage($"This server uses SCP-008-X, all zombies have been buffed!", "yellow");
         }
         public void OnPlayerLeave(LeftEventArgs ev)
         {
-            
+
         }
         public void OnPlayerHurt(HurtingEventArgs ev)
         {
@@ -64,7 +71,7 @@ namespace SCP008X.Handlers
                 Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
             }
             SCP008BuffComponent comp = ev.Attacker.GameObject.GetComponent<SCP008BuffComponent>();
-            if(comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
+            if (comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
             if (ev.Target != ev.Attacker && ev.Attacker.Role == RoleType.Scp0492)
             {
                 if (SCP008X.Instance.Config.ZombieDamage >= 0)
@@ -80,7 +87,7 @@ namespace SCP008X.Handlers
         }
         public void OnHealing(UsedMedicalItemEventArgs ev)
         {
-            if(ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled)
+            if (ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled)
             {
                 int cure = Gen.Next(1, 100);
                 if (ev.Item == ItemType.SCP500)
@@ -96,7 +103,7 @@ namespace SCP008X.Handlers
         }
         public void OnPlayerDying(DyingEventArgs ev)
         {
-            if(EnvironmentalCheck(ev))
+            if (EnvironmentalCheck(ev))
             {
                 ev.IsAllowed = true;
                 return;
@@ -111,7 +118,7 @@ namespace SCP008X.Handlers
         }
         public void On330Pickup(PickingUpScp330EventArgs ev)
         {
-            if(ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled && ev.IsSevere)
+            if (ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled && ev.IsSevere)
             {
                 ev.IsAllowed = false;
                 Turn(ev.Player);
@@ -127,7 +134,7 @@ namespace SCP008X.Handlers
         }
         public void OnReviving(StartingRecallEventArgs ev)
         {
-            if(SCP008X.Instance.Config.BuffDoctor)
+            if (SCP008X.Instance.Config.BuffDoctor)
             {
                 ev.IsAllowed = false;
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
@@ -146,14 +153,14 @@ namespace SCP008X.Handlers
         }
         public void OnPlayerDied(DiedEventArgs ev)
         {
-            if(ev.Target.Role == RoleType.Scp049 || ev.Target.Role == RoleType.Scp0492)
+            if (ev.Target.Role == RoleType.Scp049 || ev.Target.Role == RoleType.Scp0492)
             {
-                if(SCP008Check())
+                if (SCP008Check())
                 {
                     Cassie.Message($"SCP 0 0 8 containedsuccessfully . noscpsleft", false, true);
                 }
             }
-            if(SCP008X.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
+            if (SCP008X.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
             {
                 IEnumerable<User> targets = User.List.Where(x => x.CurrentRoom == ev.Target.CurrentRoom);
                 targets = targets.Where(x => x.UserId != ev.Target.UserId);
@@ -180,7 +187,7 @@ namespace SCP008X.Handlers
         {
             try
             {
-                if(target.UserId == TryGet035().UserId) is035=true;
+                if (target.UserId == TryGet035().UserId) is035 = true;
             }
             catch (Exception e)
             {
@@ -232,7 +239,7 @@ namespace SCP008X.Handlers
         }
         private bool EnvironmentalCheck(DyingEventArgs e)
         {
-            switch(DamageTypes.FromIndex(e.HitInformation.Tool).name)
+            switch (DamageTypes.FromIndex(e.HitInformation.Tool).name)
             {
                 case "FALLDOWN":
                     return true;
@@ -254,7 +261,7 @@ namespace SCP008X.Handlers
             IEnumerable<User> scps = User.List.Where(x => x.Team == Team.SCP);
             scps = scps.Where(x => x.Role == RoleType.Scp049 || x.Role == RoleType.Scp0492);
             List<User> scp008 = scps.ToList();
-            if(scp008.Count == 0)
+            if (scp008.Count == 0)
             {
                 return true;
             }

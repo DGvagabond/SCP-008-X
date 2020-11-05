@@ -17,10 +17,9 @@ namespace SCP008X
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
         public override Version Version { get; } = new Version(1, 0, 1, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 11);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 13);
 
-        private Handlers.Player PlayerEvents;
-        private Handlers.Server ServerEvents;
+        private EventHandlers events;
         public static SCP008X Singleton;
 
         public override void OnEnabled()
@@ -46,33 +45,31 @@ namespace SCP008X
         public void RegisterEvents()
         {
             Singleton = this;
-            PlayerEvents = new Handlers.Player(this);
-            ServerEvents = new Handlers.Server(this);
+            events = new EventHandlers(this);
 
-            Player.Left += PlayerEvents.OnPlayerLeave;
-            Player.Hurting += PlayerEvents.OnPlayerHurt;
-            Player.Dying += PlayerEvents.OnPlayerDying;
-            Player.Died += PlayerEvents.OnPlayerDied;
-            Player.ChangingRole += PlayerEvents.OnRoleChange;
-            Player.MedicalItemUsed += PlayerEvents.OnHealing;
-            Scp049.StartingRecall += PlayerEvents.OnReviving;
-            Scp049.FinishingRecall += PlayerEvents.OnRevived;
-            Server.RoundStarted += ServerEvents.OnRoundStart;
+            Player.Left += events.OnPlayerLeave;
+            Player.Hurting += events.OnPlayerHurt;
+            Player.Dying += events.OnPlayerDying;
+            Player.Died += events.OnPlayerDied;
+            Player.ChangingRole += events.OnRoleChange;
+            Player.MedicalItemUsed += events.OnHealing;
+            Scp049.StartingRecall += events.OnReviving;
+            Scp049.FinishingRecall += events.OnRevived;
+            Server.RoundStarted += events.OnRoundStart;
         }
         public void UnregisterEvents()
         {
-            Player.Left -= PlayerEvents.OnPlayerLeave;
-            Player.Hurting -= PlayerEvents.OnPlayerHurt;
-            Player.Dying -= PlayerEvents.OnPlayerDying;
-            Player.Died -= PlayerEvents.OnPlayerDied;
-            Player.ChangingRole -= PlayerEvents.OnRoleChange;
-            Player.MedicalItemUsed -= PlayerEvents.OnHealing;
-            Scp049.StartingRecall -= PlayerEvents.OnReviving;
-            Scp049.FinishingRecall -= PlayerEvents.OnRevived;
-            Server.RoundStarted -= ServerEvents.OnRoundStart;
+            Player.Left -= events.OnPlayerLeave;
+            Player.Hurting -= events.OnPlayerHurt;
+            Player.Dying -= events.OnPlayerDying;
+            Player.Died -= events.OnPlayerDied;
+            Player.ChangingRole -= events.OnRoleChange;
+            Player.MedicalItemUsed -= events.OnHealing;
+            Scp049.StartingRecall -= events.OnReviving;
+            Scp049.FinishingRecall -= events.OnRevived;
+            Server.RoundStarted -= events.OnRoundStart;
 
-            PlayerEvents = null;
-            ServerEvents = null;
+            events = null;
         }
     }
 }
