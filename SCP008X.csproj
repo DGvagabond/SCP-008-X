@@ -63,29 +63,30 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\EXILED Plugins\Ref\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>..\..\EXILED Plugins\Ref\Assembly-CSharp-Publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core">
       <HintPath>..\..\EXILED Plugins\Ref\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=2.1.13.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Bootstrap, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.Bootstrap.dll</HintPath>
+    <Reference Include="Exiled.Bootstrap, Version=2.1.13.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.Bootstrap.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=2.1.13.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.Loader, Version=2.1.13.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Permissions, Version=2.1.13.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Updater, Version=3.0.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.2.1.11\lib\net472\Exiled.Updater.dll</HintPath>
+      <HintPath>packages\EXILED.2.1.13\lib\net472\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>..\..\EXILED Plugins\Ref\Mirror.dll</HintPath>
@@ -114,9 +115,8 @@
   <ItemGroup>
     <Compile Include="Components\SCP008BuffComponent.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="EventHandlers.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Handlers\Player.cs" />
-    <Compile Include="Handlers\Server.cs" />
     <Compile Include="SCP008X.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
