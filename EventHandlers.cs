@@ -195,9 +195,7 @@ namespace SCP008X
             }
             try
             {
-                var check = SerpentsHand.EventHandlers.shPlayers.Select(x => User.Get(target.UserId));
-                if (check.Count() != 0)
-                    isSH = true;
+                isSH = CheckForSH(target);
             }
             catch (Exception e)
             {
@@ -207,6 +205,18 @@ namespace SCP008X
             if (isSH) return;
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
+        }
+
+        bool CheckForSH(Player player)
+        {
+            try
+            {
+                return SerpentsHand.API.SerpentsHand.GetSHPlayers().Contains(player);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         private void Turn(User target)
         {
