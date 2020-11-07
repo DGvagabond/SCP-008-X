@@ -51,19 +51,19 @@ namespace SCP008X
                     return;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                Log.Debug($"SCP-035 is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                else return;
             }
             try
             {
                 isSH = CheckForSH(ev.Target);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                else return;
             }
             if(isSH && ev.Attacker.Role == RoleType.Scp0492)
             {
@@ -189,17 +189,19 @@ namespace SCP008X
             {
                 if (target.UserId == TryGet035().UserId) is035 = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.Debug($"SCP-035 is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                else return;
             }
             try
             {
                 isSH = CheckForSH(target);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                else return;
             }
             if (is035) return;
             if (isSH) return;
