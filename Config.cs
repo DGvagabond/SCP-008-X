@@ -6,6 +6,7 @@ namespace SCP008X
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        public bool DebugMode { get; set; }
         public int InfectionChance { get; set; } = 100;
         public int CureChance { get; set; } = 50;
         [Description("Toggle players getting infected via area of effect")]
