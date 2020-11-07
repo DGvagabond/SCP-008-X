@@ -35,11 +35,14 @@ namespace SCP008X
                 Log.Error($"There was an error loading the plugin: {e}");
             }
         }
-
         public override void OnDisabled()
         {
             base.OnDisabled();
             UnregisterEvents();
+        }
+        public override void OnReloaded()
+        {
+            base.OnReloaded();
         }
 
         public void RegisterEvents()
