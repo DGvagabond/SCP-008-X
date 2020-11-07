@@ -58,17 +58,17 @@ namespace SCP008X
             }
             try
             {
-                var check = SerpentsHand.EventHandlers.shPlayers.Select(x => User.Get(ev.Target.UserId));
-                if (check.Count() != 0)
-                {
-                    ev.IsAllowed = false;
-                    return;
-                }
+                isSH = CheckForSH(ev.Target);
             }
             catch (Exception e)
             {
 
                 Log.Debug($"SerpentsHand is not installed, skipping method call: {e}", Loader.ShouldDebugBeShown);
+            }
+            if(isSH && ev.Attacker.Role == RoleType.Scp0492)
+            {
+                ev.IsAllowed = false;
+                return;
             }
             SCP008BuffComponent comp = ev.Attacker.GameObject.GetComponent<SCP008BuffComponent>();
             if (comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
@@ -207,7 +207,7 @@ namespace SCP008X
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
         }
 
-        bool CheckForSH(Player player)
+        bool CheckForSH(User player)
         {
             try
             {
