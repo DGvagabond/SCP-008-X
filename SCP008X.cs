@@ -16,7 +16,7 @@ namespace SCP008X
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(1, 0, 2, 0);
+        public override Version Version { get; } = new Version(1, 0, 2, 1);
         public override Version RequiredExiledVersion { get; } = new Version(2, 1, 13);
 
         private EventHandlers events;
@@ -47,10 +47,10 @@ namespace SCP008X
             Singleton = this;
             events = new EventHandlers(this);
 
-            Player.Left += events.OnPlayerLeave;
-            Player.Hurting += events.OnPlayerHurt;
-            Player.Dying += events.OnPlayerDying;
             Player.Died += events.OnPlayerDied;
+            Player.Left += events.OnPlayerLeave;
+            Player.Dying += events.OnPlayerDying;
+            Player.Hurting += events.OnPlayerHurt;
             Player.ChangingRole += events.OnRoleChange;
             Player.MedicalItemUsed += events.OnHealing;
             Scp049.StartingRecall += events.OnReviving;
@@ -59,15 +59,15 @@ namespace SCP008X
         }
         public void UnregisterEvents()
         {
-            Player.Left -= events.OnPlayerLeave;
-            Player.Hurting -= events.OnPlayerHurt;
-            Player.Dying -= events.OnPlayerDying;
-            Player.Died -= events.OnPlayerDied;
             Player.ChangingRole -= events.OnRoleChange;
             Player.MedicalItemUsed -= events.OnHealing;
             Scp049.StartingRecall -= events.OnReviving;
             Scp049.FinishingRecall -= events.OnRevived;
             Server.RoundStarted -= events.OnRoundStart;
+            Player.Hurting -= events.OnPlayerHurt;
+            Player.Dying -= events.OnPlayerDying;
+            Player.Left -= events.OnPlayerLeave;
+            Player.Died -= events.OnPlayerDied;
 
             events = null;
         }
