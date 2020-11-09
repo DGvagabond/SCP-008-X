@@ -29,7 +29,7 @@ namespace SCP008X
         [Description("Text displayed to players after they've been infected")]
         public string InfectionAlert { get; set; } = "You've been infected! Use SCP-500 or a medkit to be cured!";
         [Description("Text displayed to newly turned SCP-049-2 players")]
-        public string SpawnHint { get; set; } = "Players you hit will be infected!";
+        public string SpawnHint { get; set; } = "Players you hit will be infected with SCP-008!";
         [Description("Should players keep their inventory after turning into a zombie? Items cannot be used by them.")]
         public bool RetainInventory { get; set; } = true;
     }

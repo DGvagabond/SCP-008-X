@@ -38,7 +38,7 @@ namespace SCP008X
         }
         public void OnPlayerHurt(HurtingEventArgs ev)
         {
-            if (ev.Target.IPAddress == "127.0.0.1")
+            if (ev.Target.UserId == "PET")
             {
                 ev.IsAllowed = false;
                 return;
@@ -54,21 +54,19 @@ namespace SCP008X
             catch (Exception)
             {
                 if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
-                else return;
             }
             try
             {
                 isSH = CheckForSH(ev.Target);
+                if (isSH && ev.Attacker.Role == RoleType.Scp0492)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
             }
             catch (Exception)
             {
                 if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
-                else return;
-            }
-            if(isSH && ev.Attacker.Role == RoleType.Scp0492)
-            {
-                ev.IsAllowed = false;
-                return;
             }
             SCP008BuffComponent comp = ev.Attacker.GameObject.GetComponent<SCP008BuffComponent>();
             if (comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
@@ -188,23 +186,21 @@ namespace SCP008X
             try
             {
                 if (target.UserId == TryGet035().UserId) is035 = true;
+                if (is035) return;
             }
             catch (Exception)
             {
                 if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
-                else return;
             }
             try
             {
                 isSH = CheckForSH(target);
+                if (isSH) return;
             }
             catch (Exception)
             {
                 if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
-                else return;
             }
-            if (is035) return;
-            if (isSH) return;
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
         }
