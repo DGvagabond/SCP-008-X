@@ -45,7 +45,7 @@ namespace SCP008X
             }
             try
             {
-                if (ev.Target.UserId == TryGet035().UserId)
+                if (ev.Target.UserId == TryGet035().UserId && ev.Attacker.Role == RoleType.Scp0492)
                 {
                     ev.IsAllowed = false;
                     return;
