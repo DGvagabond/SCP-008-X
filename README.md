@@ -6,6 +6,7 @@ It will give **SCP-049-2** the ability to infect it's targets on hit. The target
 | Name | Type | Description | Default |
 | --- | --- | --- | --- |
 | is_enabled | bool | Toggles the plugin | true |
+| debug_mode | bool | Toggles debug messages to your console | false |
 | infection_chance | int | Percentage chance of infection | 25% |
 | cure_chance | int | Percentage chance of being cured when using a medkit | 50% |
 | aoe_infection | bool | Toggles infecting players near killed zombies | false |
