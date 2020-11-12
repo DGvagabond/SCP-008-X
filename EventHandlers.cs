@@ -218,6 +218,7 @@ namespace SCP008X
         }
         private void Turn(User target)
         {
+            if (target.ReferenceHub.playerEffectsController.GetEffect<Scp207>().Enabled) { target.ReferenceHub.playerEffectsController.DisableEffect<Scp207>(); }
             if (target.CurrentItem.id.Gun()) { target.Inventory.ServerDropAll(); }
             if (SCP008X.Instance.Config.SuicideBroadcast != null)
             {
