@@ -16,7 +16,7 @@ namespace SCP008X
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(1, 0, 2, 2);
+        public override Version Version { get; } = new Version(1, 0, 2, 3);
         public override Version RequiredExiledVersion { get; } = new Version(2, 1, 13);
 
         private EventHandlers events;
