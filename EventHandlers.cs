@@ -38,7 +38,10 @@ namespace SCP008X
         }
         public void OnPlayerLeave(LeftEventArgs ev)
         {
-
+            if(ev.Player.Role==RoleType.Scp0492 && ev.Player.ReferenceHub.GetComponent<SCP008BuffComponent>() != null)
+            {
+                ClearSCP008(ev.Player);
+            }
         }
         public void OnPlayerHurt(HurtingEventArgs ev)
         {
