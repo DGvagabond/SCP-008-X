@@ -28,6 +28,10 @@ namespace SCP008X
                 Cassie.DelayedMessage(SCP008X.Instance.Config.Announcement, 5f, false, true);
             }
         }
+        public void OnRoundEnd(RoundEndedEventArgs ev)
+        {
+            Map.ShowHint($"\n\n\n\n\n\n\n\n\n\n\n\n\n\n<align=left><color=yellow><b>Zombies Made:</b></color>\n{RoundSummary.changed_into_zombies}",30f);
+        }
         public void OnPlayerJoin(JoinedEventArgs ev)
         {
             ev.Player.SendConsoleMessage($"This server uses SCP-008-X, all zombies have been buffed!", "yellow");
