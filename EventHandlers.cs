@@ -114,14 +114,6 @@ namespace SCP008X
             }
             if (ev.Target.Role == RoleType.Scp0492) { ClearSCP008(ev.Target); }
         }
-        public void On330Pickup(PickingUpScp330EventArgs ev)
-        {
-            if (ev.Player.ReferenceHub.playerEffectsController.GetEffect<Poisoned>().Enabled && ev.IsSevere)
-            {
-                ev.IsAllowed = false;
-                Turn(ev.Player);
-            }
-        }
         public void OnRoleChange(ChangingRoleEventArgs ev)
         {
             if (ev.NewRole == RoleType.Scp0492)
