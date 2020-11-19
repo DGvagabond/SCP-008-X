@@ -60,7 +60,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                Log.Debug($"SCP-035 is not installed, skipping method call.", SCP008X.Instance.Config.DebugMode);
             }
             try
             {
@@ -73,7 +73,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                Log.Debug($"SerpentsHand is not installed, skipping method call.", SCP008X.Instance.Config.DebugMode);
             }
             SCP008BuffComponent comp = ev.Attacker.GameObject.GetComponent<SCP008BuffComponent>();
             if (comp == null) { ev.Attacker.GameObject.AddComponent<SCP008BuffComponent>(); }
@@ -176,7 +176,7 @@ namespace SCP008X
 
         private void ClearSCP008(User player)
         {
-            SCP008BuffComponent comp = player.GameObject.GetComponent<SCP008BuffComponent>();
+            var comp = player.GameObject.GetComponent<SCP008BuffComponent>();
             if (comp != null)
                 UnityEngine.Object.Destroy(comp);
         }
@@ -189,7 +189,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SCP-035 is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                Log.Debug($"SCP-035 is not installed, skipping method call.", SCP008X.Instance.Config.DebugMode);
             }
             try
             {
@@ -198,7 +198,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                if (SCP008X.Instance.Config.DebugMode) Log.Debug($"SerpentsHand is not installed, skipping method call.", Loader.ShouldDebugBeShown);
+                Log.Debug($"SerpentsHand is not installed, skipping method call.", SCP008X.Instance.Config.DebugMode);
             }
             target.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
