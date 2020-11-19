@@ -106,7 +106,7 @@ namespace SCP008X
                 ev.IsAllowed = true;
                 return;
             }
-            if (ev.HitInformation.GetDamageType() == DamageTypes.Poison)
+            if (ev.HitInformation.GetDamageType() == DamageTypes.Poison || ev.Killer.Role == RoleType.Scp0492 && ev.Target != ev.Killer)
             {
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
                 RoundSummary.changed_into_zombies++;
