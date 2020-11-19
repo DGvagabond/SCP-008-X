@@ -5,7 +5,6 @@ using SCP008X.Components;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
-using Exiled.Loader;
 using scp035.API;
 using SerpentsHand.API;
 using System;
