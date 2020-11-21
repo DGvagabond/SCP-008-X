@@ -2,7 +2,7 @@
 <a href="https://github.com/DGvagabond/SCP-008-X/releases"><img src="https://img.shields.io/github/v/release/DGvagabond/SCP-008-X?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://github.com/DGvagabond/SCP-008-X/releases"><img src="https://img.shields.io/github/downloads/DGvagabond/SCP-008-X/total?label=Downloads" alt="Downloads"></a>
 <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a>
-<a href="https://github.com/DGvagabond/SCP-008-X"><img src="https://img.shields.io/github/license/DGvagabond/SCP-008-X?color=lightgrey&label=Liscence" alt="License"></a>
+<a href="https://github.com/DGvagabond/SCP-008-X"><img src="https://img.shields.io/github/license/DGvagabond/SCP-008-X?color=lightgrey&label=License" alt="License"></a>
 # SCP-008-X
 An EXILED 2.0.x plugin for SCP:SL that adds SCP-008 into the game. This is fundamentally for server hosts that want to add more a enganging SCP-049-2 experience for their players.
 ## How does it work?
