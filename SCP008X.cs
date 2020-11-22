@@ -11,13 +11,14 @@ namespace SCP008X
     {
         internal static SCP008X Instance { get; } = new SCP008X();
         private SCP008X() { }
+        public bool outbreak {get; set; }
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(1, 0, 3, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 13);
+        public override Version Version { get; } = new Version(2, 0, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 16);
 
         private EventHandlers events;
         public static SCP008X Singleton;
@@ -55,8 +56,8 @@ namespace SCP008X
             Player.Dying += events.OnPlayerDying;
             Player.Hurting += events.OnPlayerHurt;
             Server.RoundEnded += events.OnRoundEnd;
+            Player.MedicalItemUsed += events.OnHealed;
             Player.ChangingRole += events.OnRoleChange;
-            Player.MedicalItemUsed += events.OnHealing;
             Scp049.StartingRecall += events.OnReviving;
             Scp049.FinishingRecall += events.OnRevived;
             Server.RoundStarted += events.OnRoundStart;
@@ -64,10 +65,10 @@ namespace SCP008X
         public void UnregisterEvents()
         {
             Player.ChangingRole -= events.OnRoleChange;
-            Player.MedicalItemUsed -= events.OnHealing;
             Scp049.StartingRecall -= events.OnReviving;
             Scp049.FinishingRecall -= events.OnRevived;
             Server.RoundStarted -= events.OnRoundStart;
+            Player.MedicalItemUsed -= events.OnHealed;
             Server.RoundEnded -= events.OnRoundEnd;
             Player.Hurting -= events.OnPlayerHurt;
             Player.Dying -= events.OnPlayerDying;
