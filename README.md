@@ -4,9 +4,9 @@
 <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a>
 <a href="https://github.com/DGvagabond/SCP-008-X"><img src="https://img.shields.io/github/license/DGvagabond/SCP-008-X?color=lightgrey&label=License" alt="License"></a>
 # SCP-008-X
-An EXILED 2.0.x plugin for SCP:SL that adds SCP-008 into the game. This is fundamentally for server hosts that want to add more a enganging SCP-049-2 experience for their players.
+An EXILED 2.x plugin for SCP:SL that adds SCP-008 into the game. This is fundamentally for server hosts that want to add more a enganging SCP-049-2 experience for their players.
 ## How does it work?
-It will give **SCP-049-2** the ability to infect it's targets on hit. The targets will receive the `Poisoned` status effect. In order to cure the infection, you must either use `SCP-500` for a guaranteed success or gamble with a `Medkit`'s 50% chance cure rate. Players that die while being `Poisoned` will spawn as SCP-049-2 as well.
+It will give **SCP-049-2** the ability to infect it's targets on hit. The targets will receive a custom component that drains their health over time. In order to cure the infection, you must either use `SCP-500` for a guaranteed success or gamble with a `Medkit`'s 50% chance cure rate. Players that die while infected will spawn as SCP-049-2 as well.
 # Config Options
 | Name | Type | Description | Default |
 | --- | --- | --- | --- |
