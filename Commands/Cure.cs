@@ -31,18 +31,6 @@ namespace SCP008X.Commands
                 response = "Invalid player.";
                 return false;
             }
-            switch (ply.Team)
-            {
-                case Team.SCP:
-                    response = "You can not cure SCP players.";
-                    return false;
-                case Team.TUT:
-                    response = "You can not cure this class.";
-                    return false;
-                case Team.RIP:
-                    response = "You can not cure the dead.";
-                    return false;
-            }
             if(!ply.ReferenceHub.TryGetComponent(out SCP008 scp008))
             {
                 response = "This player is not infected.";
