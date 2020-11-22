@@ -12,6 +12,7 @@ It will give **SCP-049-2** the ability to infect it's targets on hit. The target
 | --- | --- | --- | --- |
 | is_enabled | bool | Toggles the plugin | true |
 | debug_mode | bool | Toggles debug messages to your console | false |
+| summary_stats | bool | Toggles round summary stats | false |
 | infection_chance | int | Percentage chance of infection | 25% |
 | cure_chance | int | Percentage chance of being cured when using a medkit | 50% |
 | aoe_infection | bool | Toggles infecting players near killed zombies | false |
@@ -28,6 +29,12 @@ It will give **SCP-049-2** the ability to infect it's targets on hit. The target
 | infection_alert | string | A hint that is displayed to players after they're infected | `null` |
 | spawn_hint | string | A hint that's displayed to SCP-049-2 on spawn | `null` |
 | retain_inventory| bool | Allow players to keep their inventory as zombies. Items can NOT be used by them, this is purely for loot. | true |
+
+# Commands
+| Name | Arguments | Description |
+| --- | --- | --- |
+| infect | player | Infect `player` with SCP-008 |
+| cure | player | Cure `player` of SCP-008 |
 
 This plugin is still under development and I plan to add whatever is in high demand from the plugin's users, so feel free to submit your ideas!
 If something is not working as intended or outright broken, please submit an issue ticket and I'll look into it as soon as possible!
