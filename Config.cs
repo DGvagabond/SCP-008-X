@@ -6,7 +6,10 @@ namespace SCP008X
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        [Description("Only enable this if you're looking for bug sources!")]
         public bool DebugMode { get; set; }
+        [Description("Display plugins stats at the end of the round?")]
+        public bool SummaryStats { get; set; }
         public int InfectionChance { get; set; } = 100;
         public int CureChance { get; set; } = 50;
         [Description("Toggle players getting infected via area of effect")]

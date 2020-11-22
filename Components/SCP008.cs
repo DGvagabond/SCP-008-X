@@ -50,9 +50,11 @@ namespace SCP008X.Components
                     {
                         case RoleType.Scp0492:
                             Timing.RunCoroutine(RetainAHP());
+                            Log.Debug($"Started coroutine for {ply.Nickname}: RetainAHP.", SCP008X.Instance.Config.DebugMode);
                             break;
                         case RoleType.Scp096:
                             Timing.KillCoroutines(ahp);
+                            Log.Debug($"Killed coroutine for {ply.Nickname}: RetainAHP.", SCP008X.Instance.Config.DebugMode);
                             ply.AdrenalineHealth = 500f;
                             break;
                     }
@@ -64,18 +66,22 @@ namespace SCP008X.Components
                 case Team.MTF:
                     Timing.RunCoroutine(Infection());
                     Timing.KillCoroutines(ahp);
+                    Log.Debug($"Traded coroutines for {ply.Nickname}: RetainAHP -> Infection.", SCP008X.Instance.Config.DebugMode);
                     break;
                 case Team.CDP:
                     Timing.RunCoroutine(Infection());
                     Timing.KillCoroutines(ahp);
+                    Log.Debug($"Traded coroutines for {ply.Nickname}: RetainAHP -> Infection.", SCP008X.Instance.Config.DebugMode);
                     break;
                 case Team.CHI:
                     Timing.RunCoroutine(Infection());
                     Timing.KillCoroutines(ahp);
+                    Log.Debug($"Traded coroutines for {ply.Nickname}: RetainAHP -> Infection.", SCP008X.Instance.Config.DebugMode);
                     break;
                 case Team.RSC:
                     Timing.RunCoroutine(Infection());
                     Timing.KillCoroutines(ahp);
+                    Log.Debug($"Traded coroutines for {ply.Nickname}: RetainAHP -> Infection.", SCP008X.Instance.Config.DebugMode);
                     break;
             }
         }
@@ -87,7 +93,9 @@ namespace SCP008X.Components
                 if(ply.Role == RoleType.Scp0492)
                 {
                     if (ply.AdrenalineHealth <= curAHP)
+                    {
                         ply.AdrenalineHealth = curAHP;
+                    }
                     else
                     {
                         if (ply.AdrenalineHealth >= SCP008X.Instance.Config.MaxAhp)
