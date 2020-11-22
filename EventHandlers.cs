@@ -17,7 +17,6 @@ namespace SCP008X
         public EventHandlers(SCP008X plugin) => this.plugin = plugin;
         private Random Gen = new Random();
         private int victims = 0;
-        private int subjects = 0;
         private bool is035 { get; set; }
         private bool isSH { get; set; }
         private User TryGet035() => Scp035Data.GetScp035();
@@ -31,7 +30,7 @@ namespace SCP008X
         }
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
-            Map.ShowHint($"\n\n\n\n\n\n\n\n\n\n\n\n\n\n<align=left><color=yellow><b>SCP-008 Victims:</b></color> {victims}/{subjects}",30f);
+            Map.ShowHint($"\n\n\n\n\n\n\n\n\n\n\n\n\n\n<align=left><color=yellow><b>SCP-008 Victims:</b></color> {victims}/{RoundSummary.changed_into_zombies}",30f);
         }
         public void OnPlayerJoin(JoinedEventArgs ev)
         {
@@ -149,7 +148,6 @@ namespace SCP008X
             if (ev.Target.Role == RoleType.Scp0492) { ClearSCP008(ev.Target); }
             if (ev.Target.ReferenceHub.TryGetComponent(out SCP008 scp008))
             {
-                ClearSCP008(ev.Target);
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
             }
         }
@@ -224,7 +222,6 @@ namespace SCP008X
         private void Turn(User target)
         {
             victims++;
-            subjects++;
             if (!target.ReferenceHub.TryGetComponent(out SCP008 scp008)) { target.GameObject.AddComponent<SCP008>(); }
             if (target.ReferenceHub.playerEffectsController.GetEffect<Scp207>().Enabled) { target.ReferenceHub.playerEffectsController.DisableEffect<Scp207>(); }
             if (target.CurrentItem.id.Gun()) { target.Inventory.ServerDropAll(); }
