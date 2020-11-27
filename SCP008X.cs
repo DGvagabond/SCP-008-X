@@ -17,7 +17,7 @@ namespace SCP008X
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 0, 0, 0);
+        public override Version Version { get; } = new Version(2, 0, 0, 1);
         public override Version RequiredExiledVersion { get; } = new Version(2, 1, 16);
 
         private EventHandlers events;
@@ -38,12 +38,26 @@ namespace SCP008X
         }
         public override void OnDisabled()
         {
-            base.OnDisabled();
-            UnregisterEvents();
+            try
+            {
+                base.OnDisabled();
+                UnregisterEvents();
+            }
+            catch(Exception e)
+            {
+                Log.Error($"There was an error unloading the plugin: {e}");
+            }
         }
         public override void OnReloaded()
         {
-            base.OnReloaded();
+            try
+            {
+                base.OnReloaded();
+            }
+            catch(Exception e)
+            {
+                Log.Error($"There was an error reloading the plugin: {e}");
+            }
         }
 
         public void RegisterEvents()
@@ -61,9 +75,11 @@ namespace SCP008X
             Scp049.StartingRecall += events.OnReviving;
             Scp049.FinishingRecall += events.OnRevived;
             Server.RoundStarted += events.OnRoundStart;
+            Server.RestartingRound += events.OnRoundRestart;
         }
         public void UnregisterEvents()
         {
+            Server.RestartingRound -= events.OnRoundRestart;
             Player.ChangingRole -= events.OnRoleChange;
             Scp049.StartingRecall -= events.OnReviving;
             Scp049.FinishingRecall -= events.OnRevived;
