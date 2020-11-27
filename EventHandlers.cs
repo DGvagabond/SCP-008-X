@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
 using scp035.API;
-using SerpentsHand.API;
+using SCP999X.API;
 using System;
+using MEC;
 
 namespace SCP008X
 {
@@ -20,6 +21,7 @@ namespace SCP008X
         private bool is035 { get; set; }
         private bool isSH { get; set; }
         private User TryGet035() => Scp035Data.GetScp035();
+        private User TryGet999() => SCP999API.GetScp999();
 
         public void OnRoundStart()
         {
@@ -27,6 +29,10 @@ namespace SCP008X
             {
                 Cassie.DelayedMessage(SCP008X.Instance.Config.Announcement, 5f, false, true);
             }
+        }
+        public void OnRoundRestart()
+        {
+            victims = 0;
         }
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
@@ -206,8 +212,7 @@ namespace SCP008X
         {
             try
             {
-                if (target.UserId == TryGet035().UserId) is035 = true;
-                if (is035) return;
+                if (target.UserId == TryGet035().UserId) return;
             }
             catch (Exception)
             {
@@ -222,7 +227,15 @@ namespace SCP008X
             {
                 Log.Debug($"SerpentsHand, by Cyanox, is not installed. Skipping method call.", SCP008X.Instance.Config.DebugMode);
             }
-            if(target.ReferenceHub.gameObject.TryGetComponent(out SCP008 scp008)) { return; }
+            try
+            {
+                if (target.UserId == TryGet999().UserId) return;
+            }
+            catch(Exception)
+            {
+                Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping method call.", SCP008X.Instance.Config.DebugMode);
+            }
+            if (target.ReferenceHub.gameObject.TryGetComponent(out SCP008 scp008)) { return; }
             target.ReferenceHub.gameObject.AddComponent<SCP008>();
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
         }
