@@ -95,6 +95,9 @@
     <Reference Include="NorthwoodLib">
       <HintPath>..\NorthwoodLib.dll</HintPath>
     </Reference>
+    <Reference Include="SCP-999X">
+      <HintPath>..\SCP-999-X\bin\Debug\SCP-999X.dll</HintPath>
+    </Reference>
     <Reference Include="scp035">
       <HintPath>..\..\EXILED Plugins\Ref\scp035.dll</HintPath>
     </Reference>
@@ -120,6 +123,7 @@
     <Compile Include="API\SCP008XAPI.cs" />
     <Compile Include="Commands\Cure.cs" />
     <Compile Include="Commands\Infect.cs" />
+    <Compile Include="Commands\Outbreak.cs" />
     <Compile Include="Components\SCP008.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
