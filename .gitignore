@@ -367,3 +367,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+.idea/.idea.SCP008X/.idea/.name
+.idea/.idea.SCP008X/.idea/codeStyles/
+.idea/.idea.SCP008X/.idea/indexLayout.xml
+.idea/.idea.SCP008X/.idea/projectSettingsUpdater.xml
+.idea/.idea.SCP008X/.idea/vcs.xml
