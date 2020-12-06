@@ -2,11 +2,11 @@
 {
     public static class Extensions
     {
-        public static bool NonHuman(this RoleType Role, bool OnlySCPs)
+        public static bool NonHuman(this RoleType role, bool onlyScPs)
         {
-            if (OnlySCPs)
+            if (onlyScPs)
             {
-                switch (Role)
+                switch (role)
                 {
                     case RoleType.Scp049:
                     case RoleType.Scp0492:
@@ -23,7 +23,7 @@
             }
             else
             {
-                switch (Role)
+                switch (role)
                 {
                     case RoleType.Scp049:
                     case RoleType.Scp0492:
@@ -41,9 +41,9 @@
                 }
             }
         }
-        public static bool Gun(this ItemType Item)
+        public static bool Gun(this ItemType item)
         {
-            switch (Item)
+            switch (item)
             {
                 case ItemType.GunCOM15:
                 case ItemType.GunE11SR:
