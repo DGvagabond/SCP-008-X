@@ -2,17 +2,16 @@
 using System;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using SCP008X.Components;
 using scp035.API;
 using SCP999X.API;
 
-namespace SCP008X.Commands
+namespace SCP008X
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Infect : ICommand
     {
-        private Player Pull035() => Scp035Data.GetScp035();
-        private Player Pull999() => SCP999API.GetScp999();
+        private static Player Pull035() => Scp035Data.GetScp035();
+        private static Player Pull999() => SCP999API.GetScp999();
         public string Command { get; } = "infect";
 
         public string[] Aliases { get; } = null;
@@ -26,7 +25,7 @@ namespace SCP008X.Commands
                 response = "Missing permissions.";
                 return false;
             }
-            Player ply = Player.Get(arguments.At(0));
+            var ply = Player.Get(arguments.At(0));
             if(ply == null)
             {
                 response = "Invalid player.";
@@ -68,12 +67,13 @@ namespace SCP008X.Commands
             {
                 Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping check.", SCP008X.Instance.Config.DebugMode);
             }
-            if (ply.ReferenceHub.TryGetComponent(out SCP008 s008))
+            if (ply.ReferenceHub.TryGetComponent(out Scp008 s008))
             {
                 response = "This player is already infected.";
                 return false;
             }
-            ply.ReferenceHub.gameObject.AddComponent<SCP008>();
+            ply.ReferenceHub.gameObject.AddComponent<Scp008>();
+            EventHandlers.Victims.Add(ply);
             ply.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
             response = $"{ply.Nickname} has been infected.";
             return true;
