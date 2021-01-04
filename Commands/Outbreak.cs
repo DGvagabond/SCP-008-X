@@ -1,5 +1,4 @@
-﻿using RemoteAdmin;
-using CommandSystem;
+﻿using CommandSystem;
 using System;
 using Exiled.Permissions.Extensions;
 using Exiled.API.Features;
@@ -27,12 +26,12 @@ namespace SCP008X
                 response = "Missing permissions.";
                 return false;
             }
-            if (SCP008X.Instance.Outbreak)
+            if (Scp008X.Instance.Outbreak)
             {
                 response = "An outbreak has already happened.";
                 return false;
             }
-            SCP008X.Instance.Outbreak = true;
+            Scp008X.Instance.Outbreak = true;
             Cassie.Message("JAM_" + _gen.Next(0, 70).ToString("000") + "_" + _gen.Next(1, 4) + " SCP 0 0 8 containment breach detected . Lockdown of heavy containment zone has begun", Cassie.IsSpeaking, false);
             Generator079.Generators[0].ServerOvercharge(20f, true);
             foreach(var ply in Player.List)
@@ -41,9 +40,9 @@ namespace SCP008X
                 {
                     case Exiled.API.Enums.ZoneType.HeavyContainment:
                         var chance = _gen.Next(1, 100);
-                        if(chance <= SCP008X.Instance.Config.InfectionChance)
+                        if(chance <= Scp008X.Instance.Config.InfectionChance)
                         {
-                            Infect(ply);
+                            EventHandlers.Infect(ply);
                         }
                         break;
                 }
@@ -60,30 +59,6 @@ namespace SCP008X
             }
             response = "SCP-008 outbreak has begun.";
             return true;
-        }
-        private void Infect(Player target)
-        {
-            try
-            {
-                if (target.UserId == Pull035().UserId) return;
-            }
-            catch (Exception)
-            {
-                Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping method call.", SCP008X.Instance.Config.DebugMode);
-            }
-            try
-            {
-                if (target.UserId == Pull999().UserId) return;
-            }
-            catch (Exception)
-            {
-                Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping method call.", SCP008X.Instance.Config.DebugMode);
-            }
-            if(target.Role == RoleType.Tutorial) { return; }
-            if (target.ReferenceHub.gameObject.TryGetComponent(out Scp008 scp008)) { return; }
-            target.ReferenceHub.gameObject.AddComponent<Scp008>();
-            EventHandlers.Victims.Add(target);
-            target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
         }
     }
 }
