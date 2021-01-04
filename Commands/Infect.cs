@@ -53,7 +53,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping check.", SCP008X.Instance.Config.DebugMode);
+                Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping check.", Scp008X.Instance.Config.DebugMode);
             }
             try
             {
@@ -65,7 +65,7 @@ namespace SCP008X
             }
             catch (Exception)
             {
-                Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping check.", SCP008X.Instance.Config.DebugMode);
+                Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping check.", Scp008X.Instance.Config.DebugMode);
             }
             if (ply.ReferenceHub.TryGetComponent(out Scp008 s008))
             {
@@ -74,7 +74,7 @@ namespace SCP008X
             }
             ply.ReferenceHub.gameObject.AddComponent<Scp008>();
             EventHandlers.Victims.Add(ply);
-            ply.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{SCP008X.Instance.Config.InfectionAlert}", 10f);
+            ply.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 10f);
             response = $"{ply.Nickname} has been infected.";
             return true;
         }

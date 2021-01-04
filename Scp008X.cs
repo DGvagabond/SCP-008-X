@@ -7,21 +7,21 @@ using Exiled.Events.Handlers;
 
 namespace SCP008X
 {
-    public class SCP008X : Plugin<Config>
+    public class Scp008X : Plugin<Config>
     {
-        internal static SCP008X Instance { get; } = new SCP008X();
-        private SCP008X() { }
+        internal static Scp008X Instance { get; } = new Scp008X();
+        private Scp008X() { }
         public bool Outbreak {get; set; }
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 0, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 18);
+        public override Version Version { get; } = new Version(2, 0, 3, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 22);
 
         private EventHandlers _events;
-        private static SCP008X _singleton;
+        private static Scp008X _singleton;
 
         public override void OnEnabled()
         {
@@ -65,6 +65,7 @@ namespace SCP008X
             _singleton = this;
             _events = new EventHandlers(this);
 
+            Player.Shooting += _events.OnShoot;
             Player.Died += _events.OnPlayerDied;
             Player.Left += _events.OnPlayerLeave;
             Player.Dying += _events.OnPlayerDying;
@@ -76,9 +77,11 @@ namespace SCP008X
             Scp049.FinishingRecall += _events.OnRevived;
             Server.RoundStarted += _events.OnRoundStart;
             Server.RestartingRound += _events.OnRoundRestart;
+            Player.FailingEscapePocketDimension += _events.OnFail;
         }
         private void UnregisterEvents()
         {
+            Player.FailingEscapePocketDimension -= _events.OnFail;
             Server.RestartingRound -= _events.OnRoundRestart;
             Player.ChangingRole -= _events.OnRoleChange;
             Scp049.StartingRecall -= _events.OnReviving;
@@ -90,6 +93,7 @@ namespace SCP008X
             Player.Dying -= _events.OnPlayerDying;
             Player.Left -= _events.OnPlayerLeave;
             Player.Died -= _events.OnPlayerDied;
+            Player.Shooting -= _events.OnShoot;
 
             _events = null;
         }

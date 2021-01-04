@@ -36,12 +36,16 @@ namespace SCP008X
             {
                 UnityEngine.Object.Destroy(scp008);
                 EventHandlers.Victims.Remove(ply);
+                if (EventHandlers.Scp008Check())
+                {
+                    EventHandlers.Contained(ply);
+                }
                 response = $"{ply.Nickname} has been cured.";
                 return true;
             }
             catch (Exception e)
             {
-                Log.Debug($"Failed to destroy SCP008 component! {e}", SCP008X.Instance.Config.DebugMode);
+                Log.Debug($"Failed to destroy SCP008 component! {e}", Scp008X.Instance.Config.DebugMode);
                 response = $"Failed to cure {ply.Nickname}. Please contact DGvagabond for support.";
                 throw;
             }
