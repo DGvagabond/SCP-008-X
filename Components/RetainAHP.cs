@@ -10,7 +10,7 @@ namespace SCP008X
     public class RetainAhp : MonoBehaviour
     {
         private Player _ply;
-        private float _currentAhp = 0;
+        private float _currentAhp;
         private CoroutineHandle _keepAhp;
         
         public void Awake()
