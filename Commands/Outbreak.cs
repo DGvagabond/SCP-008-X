@@ -1,17 +1,16 @@
 ﻿using CommandSystem;
 using System;
+using System.Linq;
+using Exiled.API.Enums;
 using Exiled.Permissions.Extensions;
 using Exiled.API.Features;
-using scp035.API;
-using SCP999X.API;
+using MEC;
 
 namespace SCP008X
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Outbreak : ICommand
     {
-        private static Player Pull035() => Scp035Data.GetScp035();
-        private static Player Pull999() => SCP999API.GetScp999();
         private readonly Random _gen = new Random();
         public string Command { get; } = "outbreak";
 
@@ -32,31 +31,23 @@ namespace SCP008X
                 return false;
             }
             Scp008X.Instance.Outbreak = true;
-            Cassie.Message("JAM_" + _gen.Next(0, 70).ToString("000") + "_" + _gen.Next(1, 4) + " SCP 0 0 8 containment breach detected . Lockdown of heavy containment zone has begun", Cassie.IsSpeaking, false);
-            Generator079.Generators[0].ServerOvercharge(20f, true);
-            foreach(var ply in Player.List)
+            Cassie.GlitchyMessage($"SCP 0 0 8 containment breach detected . Lockdown of heavy containment zone has begun",
+                15,
+                15);
+            Generator079.Generators[0].ServerOvercharge(20f,
+                true);
+            Timing.CallDelayed(_gen.Next(1, 15), () =>
             {
-                switch (ply.CurrentRoom.Zone)
+                foreach(var ply in Player.List.Where(p => p.CurrentRoom.Zone == ZoneType.HeavyContainment))
                 {
-                    case Exiled.API.Enums.ZoneType.HeavyContainment:
-                        var chance = _gen.Next(1, 100);
-                        if(chance <= Scp008X.Instance.Config.InfectionChance)
-                        {
-                            EventHandlers.Infect(ply);
-                        }
-                        break;
+                    var chance = _gen.Next(1, 100);
+                    if(chance <= Scp008X.Instance.Config.InfectionChance)
+                    {
+                        EventHandlers.Infect(ply);
+                    }
                 }
-            }
-            foreach(var door in Map.Doors)
-            {
-                switch (door.doorType)
-                {
-                    case Door.DoorTypes.Checkpoint:
-                        door.NetworkisOpen = false;
-                        door.Networklocked = true;
-                        break;
-                }
-            }
+            });
+
             response = "SCP-008 outbreak has begun.";
             return true;
         }
