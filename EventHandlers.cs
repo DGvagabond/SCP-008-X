@@ -44,11 +44,11 @@ namespace SCP008X
             }
             Victims = null;
         }
-        public void OnPlayerJoin(JoinedEventArgs ev)
+        public void OnPlayerJoin(VerifiedEventArgs ev)
         {
             ev.Player.SendConsoleMessage($"This server uses SCP-008-X, all zombies have been buffed!", "yellow");
         }
-        public void OnPlayerLeave(LeftEventArgs ev)
+        public void OnPlayerLeave(DestroyingEventArgs ev)
         {
             if (ev.Player.Role != RoleType.Scp0492 || !ev.Player.ReferenceHub.TryGetComponent(out Scp008 s008)) return;
             ClearScp008(ev.Player);
@@ -84,22 +84,9 @@ namespace SCP008X
             {
                 Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping method call.", Scp008X.Instance.Config.DebugMode);
             }
-            try
-            {
-                IsSH = CheckForSH(ev.Target);
-                if (IsSH)
-                {
-                    Log.Debug($"{ev.Target} is part of SerpentsHand, skipping method call.", Scp008X.Instance.Config.DebugMode);
-                    ev.IsAllowed = false;
-                    return;
-                }
-            }
-            catch (Exception)
-            {
-                Log.Debug($"SerpentsHand, by Cyanox, is not installed. Skipping method call.", Scp008X.Instance.Config.DebugMode);
-            }
 
             if (ev.Target == ev.Attacker) return;
+            ev.IsAllowed = ev.Target.Role != RoleType.Tutorial;
             if (Scp008X.Instance.Config.ZombieDamage >= 0)
             {
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;

@@ -17,8 +17,8 @@ namespace SCP008X
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 0, 4, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 25);
+        public override Version Version { get; } = new Version(2, 1, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29);
 
         private EventHandlers _events;
         private static Scp008X _singleton;
@@ -67,9 +67,9 @@ namespace SCP008X
             
             Player.Shooting += _events.OnShoot;
             Player.Died += _events.OnPlayerDied;
-            Player.Left += _events.OnPlayerLeave;
+            Player.Destroying += _events.OnPlayerLeave;
             Player.Dying += _events.OnPlayerDying;
-            Player.Joined += _events.OnPlayerJoin;
+            Player.Verified += _events.OnPlayerJoin;
             Player.Hurting += _events.OnPlayerHurt;
             Server.RoundEnded += _events.OnRoundEnd;
             Player.MedicalItemUsed += _events.OnHealed;
@@ -92,8 +92,8 @@ namespace SCP008X
             Server.RoundEnded -= _events.OnRoundEnd;
             Player.Hurting -= _events.OnPlayerHurt;
             Player.Dying -= _events.OnPlayerDying;
-            Player.Joined -= _events.OnPlayerJoin;
-            Player.Left -= _events.OnPlayerLeave;
+            Player.Verified -= _events.OnPlayerJoin;
+            Player.Destroying -= _events.OnPlayerLeave;
             Player.Died -= _events.OnPlayerDied;
             Player.Shooting -= _events.OnShoot;
 
