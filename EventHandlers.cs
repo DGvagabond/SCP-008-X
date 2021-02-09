@@ -44,11 +44,11 @@ namespace SCP008X
             }
             Victims = null;
         }
-        public void OnPlayerJoin(VerifiedEventArgs ev)
+        public void OnVerified(VerifiedEventArgs ev)
         {
             ev.Player.SendConsoleMessage($"This server uses SCP-008-X, all zombies have been buffed!", "yellow");
         }
-        public void OnPlayerLeave(DestroyingEventArgs ev)
+        public void OnDestroying(DestroyingEventArgs ev)
         {
             if (ev.Player.Role != RoleType.Scp0492 || !ev.Player.ReferenceHub.TryGetComponent(out Scp008 s008)) return;
             ClearScp008(ev.Player);
@@ -61,7 +61,7 @@ namespace SCP008X
                 Log.Debug($"{ev.Player} was never added to victim list.", Scp008X.Instance.Config.DebugMode);
             }
         }
-        public void OnPlayerHurt(HurtingEventArgs ev)
+        public void OnHurt(HurtingEventArgs ev)
         {
             if (ev.Target.UserId == "PET")
             {
@@ -176,7 +176,7 @@ namespace SCP008X
             ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.SpawnHint}", 20f);
             Victims.Add(ev.Target);
         }
-        public void OnPlayerDying(DyingEventArgs ev)
+        public void OnDying(DyingEventArgs ev)
         {
             if (ev.Target.Role == RoleType.Scp0492) { ClearScp008(ev.Target); Log.Debug($"Called ClearSCP008() method for {ev.Target}.", Scp008X.Instance.Config.DebugMode); }
             if (ev.Target.ReferenceHub.TryGetComponent(out Scp008 scp008))
@@ -184,7 +184,7 @@ namespace SCP008X
                 ev.Target.SetRole(RoleType.Scp0492, true, false);
             }
         }
-        public void OnPlayerDied(DiedEventArgs ev)
+        public void OnDied(DiedEventArgs ev)
         {
             if (Scp008X.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
             {
@@ -206,6 +206,7 @@ namespace SCP008X
                 {
                     Victims.Remove(ev.Target);
                     if (!Scp008Check()) return;
+                    if (!Scp008X.Instance.Config.ContainAnnounce) return;
                     Contained(ev.Killer);
                 }
             }
@@ -261,6 +262,7 @@ namespace SCP008X
         }
         public static void Infect(User target)
         {
+            if (target.Role == RoleType.Tutorial) return;
             try
             {
                 if (target.UserId == TryGet035().UserId) return;
@@ -268,15 +270,6 @@ namespace SCP008X
             catch (Exception)
             {
                 Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping method call.", Scp008X.Instance.Config.DebugMode);
-            }
-            try
-            {
-                IsSH = CheckForSH(target);
-                if (IsSH) return;
-            }
-            catch (Exception)
-            {
-                Log.Debug($"SerpentsHand, by Cyanox, is not installed. Skipping method call.", Scp008X.Instance.Config.DebugMode);
             }
             try
             {
@@ -356,7 +349,7 @@ namespace SCP008X
                     cause = "containmentunit unknown";
                     break;
             }
-            Cassie.GlitchyMessage($"SCP 0 0 8 successfully terminated {cause}",15,15);
+            Cassie.GlitchyMessage($"SCP 0 0 8 successfully terminated {cause}",5,5);
         }
     }
 }

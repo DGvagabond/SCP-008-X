@@ -27,6 +27,7 @@ namespace SCP008X
         public int Scp008Buff { get; set; } = 10;
         public int MaxAhp { get; set; } = 100;
         public bool CassieAnnounce { get; set; } = true;
+        public bool ContainAnnounce { get; set; } = false;
         public string Announcement { get; set; } = "SCP 0 0 8 containment breach detected . Allremaining";
         public int ZombieDamage { get; set; } = 24;
         [Description("This is the text that will be displayed to SCP-049-2 players on spawn")]
