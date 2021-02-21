@@ -7,7 +7,9 @@ using scp035.API;
 using SCP999X.API;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
+using MEC;
 using Respawning;
 using Respawning.NamingRules;
 using UnityEngine;
@@ -24,17 +26,12 @@ namespace SCP008X
         private static bool IsSH { get; set; }
         private static User TryGet035() => Scp035Data.GetScp035();
         private static User TryGet999() => SCP999API.GetScp999();
-
         public void OnRoundStart()
         {
             if (Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null)
             {
                 Cassie.GlitchyMessage(Scp008X.Instance.Config.Announcement,15f,15f);
             }
-        }
-        public void OnRoundRestart()
-        {
-            
         }
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
@@ -63,6 +60,7 @@ namespace SCP008X
         }
         public void OnHurt(HurtingEventArgs ev)
         {
+            if (ev.Target == null) return;
             if (ev.Target.UserId == "PET")
             {
                 Log.Debug($"{ev.Target} is a pet object, skipping method call.", Scp008X.Instance.Config.DebugMode);
@@ -165,6 +163,7 @@ namespace SCP008X
         }
         public void OnRevived(FinishingRecallEventArgs ev)
         {
+            if(ev.Target == null) return;
             if (Scp008X.Instance.Config.SuicideBroadcast != null)
             {
                 ev.Target.ClearBroadcasts();
@@ -186,6 +185,7 @@ namespace SCP008X
         }
         public void OnDied(DiedEventArgs ev)
         {
+            if (ev.Target == null) return;
             if (Scp008X.Instance.Config.AoeInfection && ev.Target.Role == RoleType.Scp0492)
             {
                 Log.Debug($"AOE infection enabled, running check...", Scp008X.Instance.Config.DebugMode);
@@ -204,7 +204,7 @@ namespace SCP008X
                 if (ev.Target.Role == RoleType.Scp049 ||
                     ev.Target.Role == RoleType.Scp0492)
                 {
-                    Victims.Remove(ev.Target);
+                    if(Victims.Contains(ev.Target)) Victims.Remove(ev.Target);
                     if (!Scp008Check()) return;
                     if (!Scp008X.Instance.Config.ContainAnnounce) return;
                     Contained(ev.Killer);
@@ -337,19 +337,19 @@ namespace SCP008X
                     cause = $". containmentunit {team}";
                     break;
                 case Team.CDP:
-                    cause = "by classd personnel";
+                    cause = "containmentunit classd";
                     break;
                 case Team.CHI:
-                    cause = "by chaosinsurgency";
+                    cause = "containmentunit chaosinsurgency";
                     break;
                 case Team.RSC:
-                    cause = "by scientist personnel";
+                    cause = "containmentunit scientist personnel";
                     break;
                 default:
                     cause = "containmentunit unknown";
                     break;
             }
-            Cassie.GlitchyMessage($"SCP 0 0 8 successfully terminated {cause}",5,5);
+            Cassie.GlitchyMessage($"SCP 0 0 8 successfully terminated . {cause}",5,5);
         }
     }
 }
