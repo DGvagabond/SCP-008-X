@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.API.Enums;
 using Player = Exiled.Events.Handlers.Player;
@@ -12,13 +13,12 @@ namespace SCP008X
         internal static Scp008X Instance { get; } = new Scp008X();
         private Scp008X() { }
         public bool Outbreak {get; set; }
-
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 1, 0, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29);
+        public override Version Version { get; } = new Version(2, 2, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 3, 4);
 
         private EventHandlers _events;
         private static Scp008X _singleton;
@@ -77,13 +77,11 @@ namespace SCP008X
             Scp049.StartingRecall += _events.OnReviving;
             Scp049.FinishingRecall += _events.OnRevived;
             Server.RoundStarted += _events.OnRoundStart;
-            Server.RestartingRound += _events.OnRoundRestart;
             Player.FailingEscapePocketDimension += _events.OnFail;
         }
         private void UnregisterEvents()
         {
             Player.FailingEscapePocketDimension -= _events.OnFail;
-            Server.RestartingRound -= _events.OnRoundRestart;
             Player.ChangingRole -= _events.OnRoleChange;
             Scp049.StartingRecall -= _events.OnReviving;
             Scp049.FinishingRecall -= _events.OnRevived;
