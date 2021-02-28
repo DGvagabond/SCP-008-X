@@ -47,7 +47,7 @@ namespace SCP008X
         }
         public void OnDestroying(DestroyingEventArgs ev)
         {
-            if (ev.Player.Role != RoleType.Scp0492 || !ev.Player.ReferenceHub.TryGetComponent(out Scp008 s008)) return;
+            if (ev.Player.Role != RoleType.Scp0492 || !ev.Player.ReferenceHub.GetComponent<Scp008>()) return;
             ClearScp008(ev.Player);
             try
             {
