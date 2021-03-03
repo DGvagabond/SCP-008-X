@@ -7,9 +7,7 @@ using scp035.API;
 using SCP999X.API;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
-using MEC;
 using Respawning;
 using Respawning.NamingRules;
 using UnityEngine;
@@ -23,23 +21,15 @@ namespace SCP008X
         public EventHandlers(Scp008X plugin) => _plugin = plugin;
         private readonly Random _gen = new Random();
         public static List<Player> Victims = new List<Player>();
-        private static bool IsSH { get; set; }
         private static User TryGet035() => Scp035Data.GetScp035();
         private static User TryGet999() => SCP999API.GetScp999();
         public void OnRoundStart()
         {
+            Victims.Clear();
             if (Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null)
             {
                 Cassie.GlitchyMessage(Scp008X.Instance.Config.Announcement,15f,15f);
             }
-        }
-        public void OnRoundEnd(RoundEndedEventArgs ev)
-        {
-            if (Scp008X.Instance.Config.SummaryStats)
-            {
-                Map.ShowHint($"\n\n\n\n\n\n\n\n\n\n\n\n\n\n<align=left><color=yellow><b>SCP-008 Victims:</b></color> {Victims.Count}/{RoundSummary.changed_into_zombies}", 30f);
-            }
-            Victims = null;
         }
         public void OnVerified(VerifiedEventArgs ev)
         {
@@ -284,18 +274,6 @@ namespace SCP008X
             Victims.Add(target);
             
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 10f);
-        }
-
-        private static bool CheckForSH(User player)
-        {
-            try
-            {
-                return SerpentsHand.API.SerpentsHand.GetSHPlayers().Contains(player);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
         private void Turn(User target)
         {
