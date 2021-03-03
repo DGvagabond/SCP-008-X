@@ -9,12 +9,12 @@ using MEC;
 namespace SCP008X
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Outbreak : ICommand
+    public class Leak : ICommand
     {
         private readonly Random _gen = new Random();
-        public string Command { get; } = "outbreak";
+        public string Command { get; } = "leak";
 
-        public string[] Aliases { get; } = null;
+        public string[] Aliases { get; } = new string[0];
 
         public string Description { get; } = "Force an outbreak of SCP-008";
 
