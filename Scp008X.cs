@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.API.Enums;
 using Player = Exiled.Events.Handlers.Player;
@@ -17,7 +16,7 @@ namespace SCP008X
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 2, 0, 0);
+        public override Version Version { get; } = new Version(2, 2, 1, 0);
         public override Version RequiredExiledVersion { get; } = new Version(2, 3, 4);
 
         private EventHandlers _events;
@@ -71,7 +70,6 @@ namespace SCP008X
             Player.Dying += _events.OnDying;
             Player.Verified += _events.OnVerified;
             Player.Hurting += _events.OnHurt;
-            Server.RoundEnded += _events.OnRoundEnd;
             Player.MedicalItemUsed += _events.OnHealed;
             Player.ChangingRole += _events.OnRoleChange;
             Scp049.StartingRecall += _events.OnReviving;
@@ -87,7 +85,6 @@ namespace SCP008X
             Scp049.FinishingRecall -= _events.OnRevived;
             Server.RoundStarted -= _events.OnRoundStart;
             Player.MedicalItemUsed -= _events.OnHealed;
-            Server.RoundEnded -= _events.OnRoundEnd;
             Player.Hurting -= _events.OnHurt;
             Player.Dying -= _events.OnDying;
             Player.Verified -= _events.OnVerified;
