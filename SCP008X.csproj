@@ -89,6 +89,7 @@
       <HintPath>packages\EXILED.2.7.0-rc.1\lib\net472\Exiled.Updater.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SCP-343" HintPath="$(EXILED_REFERENCES)\SCP-343.dll" Private="false" />
     <Reference Include="scp035" HintPath="$(EXILED_REFERENCES)\scp035.dll" Private="false" />
     <Reference Include="SerpentsHand" HintPath="$(EXILED_REFERENCES)\SerpentsHand.dll" Private="false" />
     <Reference Include="Assembly-CSharp" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll" Private="false" />

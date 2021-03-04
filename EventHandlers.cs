@@ -75,7 +75,33 @@ namespace SCP008X
             {
                 Log.Debug($"SCP-035 by Exiled-Team is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
+            
+            try
+            {
+                if (ev.Target.IsScp343())
+                {
+                    Log.Debug($"{ev.Target} is SCP-343, skipping.", Scp008X.Instance.Config.DebugMode);
+                    ev.IsAllowed = false;
+                }
+            }
+            catch (Exception)
+            {
+                Log.Debug($"SCP-343 by unknown is not installed.", Scp008X.Instance.Config.DebugMode);
+            }
 
+            try
+            {
+                if (ev.Target.IsScp999())
+                {
+                    Log.Debug($"{ev.Target} is SCP-999, skipping.", Scp008X.Instance.Config.DebugMode);
+                    ev.IsAllowed = false;
+                }
+            }
+            catch (Exception)
+            {
+                Log.Debug($"SCP-999 by british boi is not installed.", Scp008X.Instance.Config.DebugMode);
+            }
+            
             try
             {
                 if (ev.Target.IsSerpentsHand())
@@ -298,6 +324,16 @@ namespace SCP008X
             catch (Exception)
             {
                 Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping method call.", Scp008X.Instance.Config.DebugMode);
+            }
+
+            try
+            {
+                if (target.IsScp343())
+                    return;
+            }
+            catch (Exception)
+            {
+                Log.Debug($"SCP-343 by unknown is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
             
             try

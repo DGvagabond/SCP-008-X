@@ -68,6 +68,19 @@ namespace SCP008X
             {
                 Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping check.", Scp008X.Instance.Config.DebugMode);
             }
+
+            try
+            {
+                if (ply.IsScp999())
+                {
+                    response = "You cannot infect SCP-343.";
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                Log.Debug($"SCP-999 by british boi is not installed.", Scp008X.Instance.Config.DebugMode);
+            }
             
             if (ply.ReferenceHub.TryGetComponent(out Scp008 _))
             {
