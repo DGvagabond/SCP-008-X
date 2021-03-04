@@ -45,7 +45,7 @@ namespace SCP008X
             
             try
             {
-                if(ply.IsScp039())
+                if(ply.IsScp035())
                 {
                     response = "You can not infect SCP players.";
                     return false;

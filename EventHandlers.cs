@@ -64,7 +64,7 @@ namespace SCP008X
 
             try
             {
-                if (ev.Target.IsScp039())
+                if (ev.Target.IsScp035())
                 {
                     Log.Debug($"{ev.Target} is SCP-035, skipping method call.", Scp008X.Instance.Config.DebugMode);
                     ev.IsAllowed = false;
@@ -292,7 +292,7 @@ namespace SCP008X
             
             try
             {
-                if (target.IsScp039())
+                if (target.IsScp035())
                     return;
             }
             catch (Exception)

@@ -25,7 +25,7 @@ namespace SCP008X
         public static bool IsSerpentsHand(this Player player) =>
             SerpentsHand.API.SerpentsHand.GetSHPlayers().Contains(player);
 
-        public static bool IsScp039(this Player player) => Scp035Data.GetScp035() == player;
+        public static bool IsScp035(this Player player) => Scp035Data.GetScp035() == player;
         
         public static bool IsScp999(this Player player) => SCP999API.GetScp999() == player;
     }
