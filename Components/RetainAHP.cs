@@ -46,7 +46,7 @@ namespace SCP008X
             if (e.NewRole.GetTeam() == Team.SCP)
             {
                 Timing.KillCoroutines(_keepAhp);
-                _ply.AdrenalineHealth = e.NewRole == RoleType.Scp096 ? 500f : 0f;
+                _ply.ArtificialHealth = e.NewRole == RoleType.Scp096 ? 500f : 0f;
             }
             else
                 Timing.RunCoroutine(KeepAhp());
@@ -55,15 +55,15 @@ namespace SCP008X
         {
             for(; ; )
             {
-                if (_ply.AdrenalineHealth <= _currentAhp)
-                    _ply.AdrenalineHealth = _currentAhp;
+                if (_ply.ArtificialHealth <= _currentAhp)
+                    _ply.ArtificialHealth = _currentAhp;
                 else
                 {
-                    if (_ply.AdrenalineHealth >= Scp008X.Instance.Config.MaxAhp)
+                    if (_ply.ArtificialHealth >= Scp008X.Instance.Config.MaxAhp)
                     {
-                        _ply.AdrenalineHealth = Scp008X.Instance.Config.MaxAhp;
+                        _ply.ArtificialHealth = Scp008X.Instance.Config.MaxAhp;
                     }
-                    _currentAhp = _ply.AdrenalineHealth;
+                    _currentAhp = _ply.ArtificialHealth;
                 }
 
                 yield return Timing.WaitForSeconds(0.05f);
