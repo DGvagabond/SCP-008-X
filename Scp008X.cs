@@ -1,8 +1,8 @@
 ﻿using System;
 using Exiled.API.Features;
 using Exiled.API.Enums;
-using Player = Exiled.Events.Handlers.Player;
-using Server = Exiled.Events.Handlers.Server;
+using PlayerEvents = Exiled.Events.Handlers.Player;
+using ServerEvents = Exiled.Events.Handlers.Server;
 using Exiled.Events.Handlers;
 
 namespace SCP008X
@@ -10,87 +10,67 @@ namespace SCP008X
     public class Scp008X : Plugin<Config>
     {
         internal static Scp008X Instance { get; } = new Scp008X();
+
         private Scp008X() { }
+
         public bool Outbreak {get; set; }
+
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 2, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 3, 4);
+        public override Version Version { get; } = new Version(2, 3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 7, 0);
 
         private EventHandlers _events;
-        private static Scp008X _singleton;
 
         public override void OnEnabled()
         {
-            try
-            {
-                base.OnEnabled();
-                RegisterEvents();
-            }
-
-            catch (Exception e)
-            {
-                Log.Error($"There was an error loading {Version}: {e}");
-            }
+            RegisterEvents();
+            base.OnEnabled();
         }
+        
         public override void OnDisabled()
         {
-            try
-            {
-                base.OnDisabled();
-                UnregisterEvents();
-            }
-            catch(Exception e)
-            {
-                Log.Error($"There was an error unloading {Version}: {e}");
-            }
-        }
-        public override void OnReloaded()
-        {
-            try
-            {
-                base.OnReloaded();
-            }
-            catch(Exception e)
-            {
-                Log.Error($"There was an error reloading {Version}: {e}");
-            }
+            UnregisterEvents();
+            base.OnDisabled();
         }
 
         private void RegisterEvents()
         {
-            _singleton = this;
-            _events = new EventHandlers(this);
+            _events = new EventHandlers();
             
-            Player.Shooting += _events.OnShoot;
-            Player.Died += _events.OnDied;
-            Player.Destroying += _events.OnDestroying;
-            Player.Dying += _events.OnDying;
-            Player.Verified += _events.OnVerified;
-            Player.Hurting += _events.OnHurt;
-            Player.MedicalItemUsed += _events.OnHealed;
-            Player.ChangingRole += _events.OnRoleChange;
+            PlayerEvents.Died += _events.OnDied;
+            PlayerEvents.Dying += _events.OnDying;
+            PlayerEvents.Hurting += _events.OnHurt;
+            PlayerEvents.Shooting += _events.OnShoot;
+            PlayerEvents.Verified += _events.OnVerified;
+            PlayerEvents.Destroying += _events.OnDestroying;
+            PlayerEvents.MedicalItemUsed += _events.OnHealed;
+            PlayerEvents.ChangingRole += _events.OnRoleChange;
+            PlayerEvents.FailingEscapePocketDimension += _events.OnFail;
+            
             Scp049.StartingRecall += _events.OnReviving;
             Scp049.FinishingRecall += _events.OnRevived;
-            Server.RoundStarted += _events.OnRoundStart;
-            Player.FailingEscapePocketDimension += _events.OnFail;
+            
+            ServerEvents.RoundStarted += _events.OnRoundStart;
         }
         private void UnregisterEvents()
         {
-            Player.FailingEscapePocketDimension -= _events.OnFail;
-            Player.ChangingRole -= _events.OnRoleChange;
+            PlayerEvents.Died -= _events.OnDied;
+            PlayerEvents.Dying -= _events.OnDying;
+            PlayerEvents.Hurting -= _events.OnHurt;
+            PlayerEvents.Shooting -= _events.OnShoot;
+            PlayerEvents.Verified -= _events.OnVerified;
+            PlayerEvents.Destroying -= _events.OnDestroying;
+            PlayerEvents.MedicalItemUsed -= _events.OnHealed;
+            PlayerEvents.ChangingRole -= _events.OnRoleChange;
+            PlayerEvents.FailingEscapePocketDimension -= _events.OnFail;
+            
             Scp049.StartingRecall -= _events.OnReviving;
             Scp049.FinishingRecall -= _events.OnRevived;
-            Server.RoundStarted -= _events.OnRoundStart;
-            Player.MedicalItemUsed -= _events.OnHealed;
-            Player.Hurting -= _events.OnHurt;
-            Player.Dying -= _events.OnDying;
-            Player.Verified -= _events.OnVerified;
-            Player.Destroying -= _events.OnDestroying;
-            Player.Died -= _events.OnDied;
-            Player.Shooting -= _events.OnShoot;
+            
+            ServerEvents.RoundStarted += _events.OnRoundStart;
 
             _events = null;
         }
