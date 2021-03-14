@@ -10,7 +10,7 @@ namespace SCP008X
         [Description("Only enable this if you're looking for bug sources!")]
         public bool DebugMode { get; set; } = false;
         public int InfectionChance { get; set; } = 100;
-        public int CureChance { get; set; } = 50;
+        public int CureChance { get; set; } = 25;
         [Description("Toggle players getting infected via area of effect")]
         public bool AoeInfection { get; set; } = false;
         [Description("Set AOE infection to run when infected players turn?")]
