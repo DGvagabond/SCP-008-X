@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using SCP_343.API;
 using scp035.API;
+using SCP999X;
 
 namespace SCP008X
 {
@@ -23,12 +24,11 @@ namespace SCP008X
             }
         }
 
-        public static bool IsSerpentsHand(this Player player) =>
-            SerpentsHand.API.SerpentsHand.GetSHPlayers().Contains(player);
+        public static bool IsSerpentsHand(this Player player) => SerpentsHand.API.SerpentsHand.GetSHPlayers().Contains(player);
 
         public static bool IsScp035(this Player player) => Scp035Data.GetScp035() == player;
         
-        public static bool IsScp999(this Player player) => SCP999API.GetScp999() == player;
+        public static bool IsScp999(this Player player) => Scp999API.GetScp999() == player;
 
         public static bool IsScp343(this Player player) => SCP_343Data.TryGet343() == player;
     }
