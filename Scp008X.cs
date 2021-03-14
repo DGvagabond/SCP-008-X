@@ -14,24 +14,27 @@ namespace SCP008X
         private Scp008X() { }
 
         public bool Outbreak {get; set; }
+        public Random Rng;
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         public override string Author { get; } = "DGvagabond";
         public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 3, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 7, 0);
+        public override Version Version { get; } = new Version(2, 3, 1, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 9, 2);
 
         private EventHandlers _events;
 
         public override void OnEnabled()
         {
+            RegisterItems();
             RegisterEvents();
             base.OnEnabled();
         }
         
         public override void OnDisabled()
         {
+            UnregisterItems();
             UnregisterEvents();
             base.OnDisabled();
         }
@@ -73,6 +76,15 @@ namespace SCP008X
             ServerEvents.RoundStarted += _events.OnRoundStart;
 
             _events = null;
+        }
+
+        private void RegisterItems()
+        {
+            new Scp0081().TryRegister();
+        }
+        private void UnregisterItems()
+        {
+            new Scp0081().TryUnregister();
         }
     }
 }
