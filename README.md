@@ -12,6 +12,7 @@ For generalized inquiries and support, there are three (3) options available to 
 1. Join my Discord with the link above and request the Scientist role. Then, ping me for support in the appropriate channel.
 2. File a bug report on the Issues page.
 3. Ping me in the plugin bug reporting channel in the EXILED Discord, link also provided above.
+
 These methods are not exclusive for bug reports. You may use them, preferrably the first option for organizational reasons on my part, for requesting features to be added to the plugin.
 # Config Options
 | Name | Type | Description | Default |
