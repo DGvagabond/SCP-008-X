@@ -1,6 +1,5 @@
 ﻿using System;
 using Exiled.API.Features;
-using Exiled.API.Enums;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using Exiled.Events.Handlers;
@@ -12,35 +11,32 @@ namespace SCP008X
         internal static Scp008X Instance { get; } = new Scp008X();
 
         private Scp008X() { }
+        public Random Rng = new Random();
 
-        public bool Outbreak {get; set; }
-        public Random Rng;
-
-        public override PluginPriority Priority { get; } = PluginPriority.Medium;
-
-        public override string Author { get; } = "DGvagabond";
-        public override string Name { get; } = "Scp008X";
-        public override Version Version { get; } = new Version(2, 3, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 9, 2);
+        public override string Author => "DGvagabond";
+        public override string Name => "Scp008X";
+        public override Version Version { get; } = new Version(3, 0, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
 
         private EventHandlers _events;
 
         public override void OnEnabled()
         {
-            RegisterItems();
+            //RegisterItems();
             RegisterEvents();
             base.OnEnabled();
         }
         
         public override void OnDisabled()
         {
-            UnregisterItems();
+            //UnregisterItems();
             UnregisterEvents();
             base.OnDisabled();
         }
 
         private void RegisterEvents()
         {
+            Log.Debug("Loading events...");
             _events = new EventHandlers();
             
             PlayerEvents.Died += _events.OnDied;
@@ -49,7 +45,7 @@ namespace SCP008X
             PlayerEvents.Shooting += _events.OnShoot;
             PlayerEvents.Verified += _events.OnVerified;
             PlayerEvents.Destroying += _events.OnDestroying;
-            PlayerEvents.MedicalItemUsed += _events.OnHealed;
+            PlayerEvents.ItemUsed += _events.OnHealed;
             PlayerEvents.ChangingRole += _events.OnRoleChange;
             PlayerEvents.FailingEscapePocketDimension += _events.OnFail;
             
@@ -60,13 +56,15 @@ namespace SCP008X
         }
         private void UnregisterEvents()
         {
+            Log.Debug("Unloading events...");
+            
             PlayerEvents.Died -= _events.OnDied;
             PlayerEvents.Dying -= _events.OnDying;
             PlayerEvents.Hurting -= _events.OnHurt;
             PlayerEvents.Shooting -= _events.OnShoot;
             PlayerEvents.Verified -= _events.OnVerified;
             PlayerEvents.Destroying -= _events.OnDestroying;
-            PlayerEvents.MedicalItemUsed -= _events.OnHealed;
+            PlayerEvents.ItemUsed -= _events.OnHealed;
             PlayerEvents.ChangingRole -= _events.OnRoleChange;
             PlayerEvents.FailingEscapePocketDimension -= _events.OnFail;
             
@@ -80,11 +78,15 @@ namespace SCP008X
 
         private void RegisterItems()
         {
-            new Scp0081().TryRegister();
+            Log.Debug("Loading items...");
+            
+            //new Dg008().TryRegister();
         }
         private void UnregisterItems()
         {
-            new Scp0081().TryUnregister();
+            Log.Debug("Unloading items...");
+            
+            //new Dg008().TryUnregister();
         }
     }
 }

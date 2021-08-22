@@ -1,25 +1,20 @@
-﻿using CustomPlayerEffects;
-using Exiled.Events.EventArgs;
+﻿using Exiled.Events.EventArgs;
 using System.Linq;
 using Exiled.API.Features;
 using System;
-using System.Collections.Generic;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Respawning;
 using Respawning.NamingRules;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using Scp207 = CustomPlayerEffects.Scp207;
 
 namespace SCP008X
 {
     public class EventHandlers
     {
-        public static List<Player> Victims = new List<Player>();
-        public static bool Scp008Check() => Victims.Count <= 0;
-
         public void OnRoundStart()
         {
-            Victims.Clear();
             if (Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null)
             {
                 Cassie.Message(Scp008X.Instance.Config.Announcement);
@@ -37,7 +32,7 @@ namespace SCP008X
             ClearScp008(ev.Player);
             try
             {
-                Victims.Remove(ev.Player);
+                ev.Player.SessionVariables.Remove("Scp008");
             }
             catch (Exception)
             {
@@ -59,54 +54,54 @@ namespace SCP008X
 
             try
             {
-                if (ev.Target.IsScp035())
+                if (ev.Target.SessionVariables.ContainsKey("Scp035Tag")) //IsScp035())
                 {
                     Log.Debug($"{ev.Target} is SCP-035, skipping.", Scp008X.Instance.Config.DebugMode);
                     ev.IsAllowed = false;
                     return;
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"SCP-035 by Exiled-Team is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
             
             try
             {
-                if (ev.Target.IsScp343())
+                if (ev.Target.SessionVariables.ContainsKey("Scp343Tag")) //IsScp343())
                 {
                     Log.Debug($"{ev.Target} is SCP-343, skipping.", Scp008X.Instance.Config.DebugMode);
                     ev.IsAllowed = false;
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"SCP-343 by [UNKNOWN AUTHOR] is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
 
             try
             {
-                if (ev.Target.IsScp999())
+                if (ev.Target.SessionVariables.ContainsKey("Scp999Tag")) //IsScp999())
                 {
                     Log.Debug($"{ev.Target} is SCP-999, skipping.", Scp008X.Instance.Config.DebugMode);
                     ev.IsAllowed = false;
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"SCP-999 by DGvagabond is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
             
             try
             {
-                if (ev.Target.IsSerpentsHand())
+                if (ev.Target.SessionVariables.ContainsKey("SerpentsHand")) //IsSerpentsHand())
                 {
                     Log.Debug($"{ev.Target} is Serpent's Hand. Skipping.", Scp008X.Instance.Config.DebugMode);
                     ev.IsAllowed = false;
                     return;
                 }
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"Serpent's Hand by Exiled-Team is not installed. Skipping.");
             }
@@ -125,7 +120,7 @@ namespace SCP008X
                 Log.Debug($"Added {Scp008X.Instance.Config.Scp008Buff} AHP to {ev.Attacker}.", Scp008X.Instance.Config.DebugMode);
             }
             
-            int chance = Scp008X.Instance.Rng.Next(1, 100);
+            var chance = Scp008X.Instance.Rng.Next(1, 100);
             
             if (chance > Scp008X.Instance.Config.InfectionChance || ev.Target.Team == Team.SCP) 
                 return;
@@ -141,28 +136,24 @@ namespace SCP008X
             }
         }
         
-        public void OnHealed(UsedMedicalItemEventArgs ev)
+        public void OnHealed(UsedItemEventArgs ev)
         {
-            int chance = Scp008X.Instance.Rng.Next(1, 100);
+            var chance = Scp008X.Instance.Rng.Next(1, 100);
             
             if (!ev.Player.ReferenceHub.TryGetComponent(out Scp008 scp008)) 
                 return;
             
-            switch (ev.Item)
+            switch (ev.Item.Type)
             {
-                case ItemType.SCP500:
-                    Object.Destroy(scp008);
-                    if (Victims.Contains(ev.Player))
-                        Victims.Remove(ev.Player);
+                 case Exiled.API.Enums.ItemType.Scp500:
+                    ClearScp008(ev.Player);
                     
                     Log.Debug($"{ev.Player} successfully cured themselves.", Scp008X.Instance.Config.DebugMode);
                     break;
-                case ItemType.Medkit:
+                case Exiled.API.Enums.ItemType.Medkit:
                     if (chance <= Scp008X.Instance.Config.CureChance)
                     {
-                        Object.Destroy(scp008);
-                        if (Victims.Contains(ev.Player))
-                            Victims.Remove(ev.Player);
+                        ClearScp008(ev.Player);
                         
                         Log.Debug($"{ev.Player} cured themselves with {chance}% probability.", Scp008X.Instance.Config.DebugMode);
                     }
@@ -178,7 +169,8 @@ namespace SCP008X
                 Turn(ev.Player);
             }
 
-            ClearScp008(ev.Player); ev.Player.ArtificialHealth = 0; 
+            ClearScp008(ev.Player);
+            ev.Player.ArtificialHealth = 0; 
             Log.Debug($"Called ClearSCP008() method for {ev.Player}.", Scp008X.Instance.Config.DebugMode);
         }
         
@@ -188,7 +180,7 @@ namespace SCP008X
                 return;
             
             ev.IsAllowed = false;
-            ev.Target.SetRole(RoleType.Scp0492, true);
+            ev.Target.SetRole(RoleType.Scp0492, SpawnReason.Revived, true);
         }
         
         public void OnRevived(FinishingRecallEventArgs ev)
@@ -199,7 +191,7 @@ namespace SCP008X
             if (Scp008X.Instance.Config.SuicideBroadcast != null)
             {
                 ev.Target.ClearBroadcasts();
-                ev.Target.Broadcast(10, Scp008X.Instance.Config.SuicideBroadcast);
+                ev.Target.Broadcast(10, Scp008X.Instance.Config.SuicideBroadcast, Broadcast.BroadcastFlags.Normal, true);
             }
 
             if (Scp008X.Instance.Config.Scp008Buff >= 0)
@@ -213,19 +205,19 @@ namespace SCP008X
             Log.Debug($"Set {ev.Target}'s HP to {Scp008X.Instance.Config.Scp008Buff}.", Scp008X.Instance.Config.DebugMode);
             
             ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.SpawnHint}", 20f);
-            Victims.Add(ev.Target);
+            ev.Target.SessionVariables.Add("Scp008", 1);
         }
         
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Target.Role == RoleType.Scp0492)
+            if (ev.Target.Role != RoleType.Scp0492)
             {
                 ClearScp008(ev.Target); 
                 Log.Debug($"Called ClearSCP008() method for {ev.Target}.", Scp008X.Instance.Config.DebugMode);
             }
             
             if (ev.Target.ReferenceHub.TryGetComponent(out Scp008 _)) 
-                ev.Target.SetRole(RoleType.Scp0492, true);
+                ev.Target.SetRole(RoleType.Scp0492, SpawnReason.Revived, true);
         }
         
         public void OnDied(DiedEventArgs ev)
@@ -237,19 +229,15 @@ namespace SCP008X
             {
                 Log.Debug($"AOE infection enabled, running check...", Scp008X.Instance.Config.DebugMode);
                 
-                List<Player> infected = Player.List.Where(x => x.CurrentRoom == ev.Target.CurrentRoom && x.UserId != ev.Target.UserId).ToList();
+                var infected = Player.List.Where(x => x.CurrentRoom == ev.Target.CurrentRoom && x.UserId != ev.Target.UserId).ToList();
                 
                 Log.Debug($"Made a list of {infected.Count} players.", Scp008X.Instance.Config.DebugMode);
                 
                 if (infected.Count == 0) 
                     return;
                 
-                foreach (Player ply in infected)
+                foreach (var ply in from ply in infected let chance = Scp008X.Instance.Rng.Next(1, 100) where chance <= Scp008X.Instance.Config.AoeChance && ply.Team != Team.SCP select ply)
                 {
-                    int chance = Scp008X.Instance.Rng.Next(1, 100);
-                    if (chance > Scp008X.Instance.Config.AoeChance || ply.Team == Team.SCP) 
-                        continue;
-                    
                     Infect(ply);
                     Log.Debug($"Called Infect() method for {ev.Target} due to AOE.", Scp008X.Instance.Config.DebugMode);
                 }
@@ -259,10 +247,9 @@ namespace SCP008X
             {
                 if (ev.Target.Role == RoleType.Scp049 || ev.Target.Role == RoleType.Scp0492)
                 {
-                    if(Victims.Contains(ev.Target)) 
-                        Victims.Remove(ev.Target);
+                    ClearScp008(ev.Target);
                     
-                    if (!Scp008Check() || !Scp008X.Instance.Config.ContainAnnounce) 
+                    if (!Scp008X.Instance.Config.ContainAnnounce) 
                         return;
 
                     Contained(ev.Killer);
@@ -277,33 +264,31 @@ namespace SCP008X
             
             ev.IsAllowed = false;
 
-            List<Player> teammates = Player.Get(Side.Scp).Where(p => p.Role != RoleType.Scp079).ToList();
+            var teammates = Player.Get(Side.Scp).Where(p => p.Role != RoleType.Scp079).ToList();
             
             if (teammates.Count > 0)
             {
-                Room spawn = teammates[Scp008X.Instance.Rng.Next(teammates.Count)].CurrentRoom;
+                var spawn = teammates[Scp008X.Instance.Rng.Next(teammates.Count)].CurrentRoom;
                 ev.Player.Position = new Vector3(spawn.Position.x, spawn.Position.y + 2, spawn.Position.z);
             }
             else
             {
-                List<Room> facility = Map.Rooms.Where(r => r.Zone != ZoneType.LightContainment && r.Zone != ZoneType.Unspecified).ToList();
+                var facility = Map.Rooms.Where(r => r.Zone != ZoneType.LightContainment && r.Zone != ZoneType.Unspecified).ToList();
                 
-                Room room = facility[Scp008X.Instance.Rng.Next(facility.Count)];
+                var room = facility[Scp008X.Instance.Rng.Next(facility.Count)];
                 ev.Player.Position = new Vector3(room.Position.x, room.Position.y + 2, room.Position.z);
             }
         }
         
         public void OnShoot(ShootingEventArgs ev) => ev.IsAllowed = ev.Shooter.Team != Team.SCP;
 
-        private static void ClearScp008(Player player)
+        public static void ClearScp008(Player player)
         {
             if (player.GameObject.TryGetComponent(out Scp008 scp008))
-                Object.Destroy(scp008);
-            if (player.GameObject.TryGetComponent(out RetainAhp rAhp))
-                Object.Destroy(rAhp);
+                UnityEngine.Object.Destroy(scp008);
 
-            if (Victims.Contains(player))
-                Victims.Remove(player);
+            if (player.SessionVariables.ContainsKey("Scp008"))
+                player.SessionVariables.Remove("Scp008");
         }
         
         public static void Infect(Player target)
@@ -313,30 +298,30 @@ namespace SCP008X
             
             try
             {
-                if (target.IsScp035())
+                if (target.SessionVariables.ContainsKey("Scp035")) //IsScp035())
                     return;
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"SCP-035, by Exiled-Team, is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
 
             try
             {
-                if (target.IsScp343())
+                if (target.SessionVariables.ContainsKey("Scp343")) //IsScp343())
                     return;
             }
-            catch (Exception)
+            catch
             {
                 Log.Debug($"SCP-343 by [UNKNOWN AUTHOR] is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
             
             try
             {
-                if (target.IsScp999())
+                if (target.SessionVariables.ContainsKey("Scp999")) //IsScp999())
                     return;
             }
-            catch(Exception)
+            catch
             {
                 Log.Debug($"SCP-999-X, by DGvagabond, is not installed. Skipping.", Scp008X.Instance.Config.DebugMode);
             }
@@ -345,7 +330,7 @@ namespace SCP008X
                 return;
             
             target.ReferenceHub.gameObject.AddComponent<Scp008>();
-            Victims.Add(target);
+            target.SessionVariables.Add("Scp008", 1);
             
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 10f);
         }
@@ -355,16 +340,16 @@ namespace SCP008X
             if (!target.ReferenceHub.TryGetComponent(out Scp008 _)) 
                 target.GameObject.AddComponent<Scp008>();
             
-            if (target.ReferenceHub.playerEffectsController.GetEffect<Scp207>().Enabled) 
+            if (target.ReferenceHub.playerEffectsController.GetEffect<Scp207>().enabled) 
                 target.DisableEffect<Scp207>();
             
-            if (target.CurrentItem.id.Gun()) 
-                target.Inventory.ServerDropAll();
+            if (target.CurrentItem.Type.IsWeapon())
+                target.Inventory.CmdDropItem(target.CurrentItem.Serial, true);
             
             if (Scp008X.Instance.Config.SuicideBroadcast != null)
             {
                 target.ClearBroadcasts();
-                target.Broadcast(10, Scp008X.Instance.Config.SuicideBroadcast);
+                target.Broadcast(10,Scp008X.Instance.Config.SuicideBroadcast,Broadcast.BroadcastFlags.Normal,true);
             }
             
             if (!Scp008X.Instance.Config.RetainInventory) 
@@ -372,21 +357,20 @@ namespace SCP008X
             
             if (Scp008X.Instance.Config.Scp008Buff >= 0) 
                 target.ArtificialHealth += Scp008X.Instance.Config.Scp008Buff;
-            
-            target.GameObject.AddComponent<RetainAhp>();
+
+            target.ArtificialHealthDecay = 0f;
             target.Health = Scp008X.Instance.Config.ZombieHealth;
             target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.SpawnHint}", 20f);
             
             if (!Scp008X.Instance.Config.AoeTurned) 
                 return;
             
-            List<Player> infected = Player.List.Where(x => x.CurrentRoom == target.CurrentRoom && x.UserId != target.UserId).ToList();
+            var infected = Player.List.Where(x => x.CurrentRoom == target.CurrentRoom && x.UserId != target.UserId).ToList();
             if (infected.Count == 0) 
                 return;
 
-            foreach (Player player in infected)
-                if (Scp008X.Instance.Rng.Next(100) <= Scp008X.Instance.Config.AoeChance && player.Team != Team.SCP)
-                    Infect(player);
+            foreach (var player in infected.Where(player => Scp008X.Instance.Rng.Next(100) <= Scp008X.Instance.Config.AoeChance && player.Team != Team.SCP))
+                Infect(player);
         }
 
         public static void Contained(Player pl)
@@ -398,7 +382,7 @@ namespace SCP008X
             switch (pl.Team)
             {
                 case Team.MTF:
-                    string team = !UnitNamingRules.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out var unit) 
+                    var team = !UnitNamingRules.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out var unit) 
                         ? "unknown" : unit.GetCassieUnitName(pl.ReferenceHub.characterClassManager.CurUnitName);
                     cause = $". containmentunit {team}";
                     break;

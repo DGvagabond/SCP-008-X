@@ -10,7 +10,7 @@ namespace SCP008X
         [Description("Only enable this if you're looking for bug sources!")]
         public bool DebugMode { get; set; } = false;
         public int InfectionChance { get; set; } = 100;
-        public int CureChance { get; set; } = 25;
+        public int CureChance { get; set; } = 50;
         [Description("Toggle players getting infected via area of effect")]
         public bool AoeInfection { get; set; } = false;
         [Description("Set AOE infection to run when infected players turn?")]
@@ -21,7 +21,7 @@ namespace SCP008X
         public bool BuffDoctor { get; set; } = false;
         public int ZombieHealth { get; set; } = 300;
         [Description("How much AHP should be given to Zombies?")]
-        public int Scp008Buff { get; set; } = 10;
+        public ushort Scp008Buff { get; set; } = 10;
         public int MaxAhp { get; set; } = 100;
         public bool CassieAnnounce { get; set; } = true;
         public bool ContainAnnounce { get; set; } = false;
