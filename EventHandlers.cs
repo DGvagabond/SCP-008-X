@@ -1,9 +1,9 @@
 ﻿using Exiled.Events.EventArgs;
 using Exiled.API.Features;
 using System;
-using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
+using MEC;
 
 namespace SCP008X
 {
@@ -35,7 +35,7 @@ namespace SCP008X
                 
                 var chance = Gen.Next(1, 100);
                 if (chance >= Scp008X.Instance.Config.InfectionChance ||
-                    ev.Target.GetEffect(EffectType.Poisoned)) return;
+                    ev.Target.GetEffect(EffectType.Poisoned).IsEnabled) return;
 
                 ev.Target.EnableEffect(EffectType.Poisoned);
                 ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}");
@@ -47,7 +47,7 @@ namespace SCP008X
         
         public void OnHealed(UsedItemEventArgs ev)
         {
-            if (!ev.Player.GetEffect(EffectType.Poisoned)) return;
+            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) return;
 
             var chance = Gen.Next(1, 100);
             switch (ev.Item.Type)
@@ -71,12 +71,20 @@ namespace SCP008X
         
         public void OnRoleChange(ChangingRoleEventArgs ev)
         {
-            ev.Player.ArtificialHealthDecay = ev.NewRole.GetTeam() != Team.SCP ? 1 : 0;
-            if(ev.NewRole == RoleType.Scp0492)
+            Timing.CallDelayed(1f, () =>
             {
-                if(ev.Player.GetEffect(EffectType.Scp207)) ev.Player.DisableEffect(EffectType.Scp207);
-                ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
-            }
+                ev.Player.ArtificialHealthDecay = ev.NewRole.GetTeam() != Team.SCP ? 1 : 0;
+                if(ev.NewRole == RoleType.Scp0492)
+                {
+                    if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);
+                    ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                    ev.Player.ArtificialHealth = Scp008X.Instance.Config.StartingAhp;
+                }
+                else if (ev.NewRole.GetTeam() != Team.SCP)
+                {
+                    ev.Player.ArtificialHealth = 0;
+                }
+            });
         }
         
         public void OnReviving(StartingRecallEventArgs ev)
@@ -89,7 +97,7 @@ namespace SCP008X
         
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned))
+            if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
             {
                 ev.IsAllowed = false;
                 ev.Target.DisableEffect(EffectType.Poisoned);
