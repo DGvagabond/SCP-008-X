@@ -43,6 +43,21 @@ namespace SCP008X
                 Log.Debug($"{ev.Attacker.Nickname} infected {ev.Target.Nickname} with {chance}% probability.",
                     Scp008X.Instance.Config.DebugMode);
             }
+
+            if (ev.Target.Role == RoleType.Scp0492 && ev.Target != ev.Attacker && ev.Target.ArtificialHealth >= 0)
+            {
+                ev.IsAllowed = false;
+                if (ev.Target.ArtificialHealth <= ev.Amount)
+                {
+                    var leftover = ev.Amount - ev.Target.ArtificialHealth;
+                    ev.Target.ArtificialHealth = 0;
+                    ev.Target.Hurt(leftover, ev.Attacker, ev.DamageType);
+                }
+                else
+                {
+                    ev.Target.ArtificialHealth -= (ushort)ev.Amount;
+                }
+            }
         }
         
         public void OnHealed(UsedItemEventArgs ev)
