@@ -379,3 +379,5 @@ packages.config
 *.config
 SCP008X.csproj
 packages.config
+*.config
+*.csproj
