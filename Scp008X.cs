@@ -39,18 +39,14 @@ namespace SCP008X
             Log.Debug("Loading events...");
             _events = new EventHandlers();
             
-            PlayerEvents.Died += _events.OnDied;
             PlayerEvents.Dying += _events.OnDying;
             PlayerEvents.Hurting += _events.OnHurt;
             PlayerEvents.Shooting += _events.OnShoot;
             PlayerEvents.Verified += _events.OnVerified;
-            PlayerEvents.Destroying += _events.OnDestroying;
             PlayerEvents.ItemUsed += _events.OnHealed;
             PlayerEvents.ChangingRole += _events.OnRoleChange;
-            PlayerEvents.FailingEscapePocketDimension += _events.OnFail;
             
             Scp049.StartingRecall += _events.OnReviving;
-            Scp049.FinishingRecall += _events.OnRevived;
             
             ServerEvents.RoundStarted += _events.OnRoundStart;
         }
@@ -58,18 +54,14 @@ namespace SCP008X
         {
             Log.Debug("Unloading events...");
             
-            PlayerEvents.Died -= _events.OnDied;
             PlayerEvents.Dying -= _events.OnDying;
             PlayerEvents.Hurting -= _events.OnHurt;
             PlayerEvents.Shooting -= _events.OnShoot;
             PlayerEvents.Verified -= _events.OnVerified;
-            PlayerEvents.Destroying -= _events.OnDestroying;
             PlayerEvents.ItemUsed -= _events.OnHealed;
             PlayerEvents.ChangingRole -= _events.OnRoleChange;
-            PlayerEvents.FailingEscapePocketDimension -= _events.OnFail;
             
             Scp049.StartingRecall -= _events.OnReviving;
-            Scp049.FinishingRecall -= _events.OnRevived;
             
             ServerEvents.RoundStarted += _events.OnRoundStart;
 
