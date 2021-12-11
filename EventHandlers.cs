@@ -1,12 +1,18 @@
-﻿using Exiled.Events.EventArgs;
-using Exiled.API.Features;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using MEC;
-using Random = System.Random;
+﻿// -----------------------------------------------------------------------
+// <copyright file="EventHandlers.cs">
+// Copyright (c) DGvagabond. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace SCP008X
 {
+    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using MEC;
+    using Random = System.Random;
+    
     public class EventHandlers
     {
         public Random Gen = new Random();
@@ -25,6 +31,7 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
+            if (ev.Attacker == null || ev.Target == null) return;
             if (ev.Attacker.Role == RoleType.Scp0492 && ev.Attacker != ev.Target)
             {
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
@@ -51,7 +58,7 @@ namespace SCP008X
                 {
                     var leftover = ev.Amount - ev.Target.ArtificialHealth;
                     ev.Target.ArtificialHealth = 0;
-                    ev.Target.Hurt(leftover, ev.Attacker, ev.DamageType);
+                    ev.Target.Hurt($"Hit by {ev.Attacker.DisplayNickname}", leftover);
                 }
                 else
                 {
@@ -88,7 +95,8 @@ namespace SCP008X
         {
             Timing.CallDelayed(1f, () =>
             {
-                ev.Player.ArtificialHealthDecay = ev.NewRole.GetTeam() != Team.SCP ? 1 : 0;
+                // TODO Create a workaround for ArtificialHealthDecay
+                // ev.Player.ArtificialHealthDecay = ev.NewRole.GetTeam() != Team.SCP ? 1 : 0;
                 if(ev.NewRole == RoleType.Scp0492)
                 {
                     if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);

@@ -1,8 +1,14 @@
-﻿using System.ComponentModel;
-using Exiled.API.Interfaces;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Config.cs">
+// Copyright (c) DGvagabond. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace SCP008X
 {
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+    
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;

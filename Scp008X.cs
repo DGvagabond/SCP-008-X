@@ -1,11 +1,17 @@
-﻿using System;
-using Exiled.API.Features;
-using PlayerEvents = Exiled.Events.Handlers.Player;
-using ServerEvents = Exiled.Events.Handlers.Server;
-using Exiled.Events.Handlers;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Scp008X.cs">
+// Copyright (c) DGvagabond. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace SCP008X
 {
+    using System;
+    using Exiled.API.Features;
+    using PlayerEvents = Exiled.Events.Handlers.Player;
+    using ServerEvents = Exiled.Events.Handlers.Server;
+    using Exiled.Events.Handlers;
+    
     public class Scp008X : Plugin<Config>
     {
         internal static Scp008X Instance { get; } = new Scp008X();
@@ -15,8 +21,8 @@ namespace SCP008X
 
         public override string Author => "DGvagabond";
         public override string Name => "Scp008X";
-        public override Version Version { get; } = new Version(3, 0, 0, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
+        public override Version Version { get; } = new Version(3, 1, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(4, 1, 5);
 
         private EventHandlers _events;
 
