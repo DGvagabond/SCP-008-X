@@ -6,6 +6,7 @@
 
 namespace SCP008X
 {
+    using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
@@ -115,7 +116,7 @@ namespace SCP008X
             if (!Scp008X.Instance.Config.BuffDoctor) return;
             
             ev.IsAllowed = false;
-            ev.Target.SetRole(RoleType.Scp0492, SpawnReason.Revived, true);
+            CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
         }
         
         public void OnDying(DyingEventArgs ev)
@@ -125,7 +126,7 @@ namespace SCP008X
                 ev.IsAllowed = false;
                 ev.Target.DisableEffect(EffectType.Poisoned);
                 ev.Target.ClearInventory();
-                ev.Target.SetRole(RoleType.Scp0492, SpawnReason.Revived, true);
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
             }
         }
         
