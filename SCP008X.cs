@@ -56,7 +56,6 @@ namespace SCP008X
             Player.Dying += events.OnPlayerDying;
             Player.Hurting += events.OnPlayerHurt;
             Server.RoundEnded += events.OnRoundEnd;
-            Player.MedicalItemUsed += events.OnHealed;
             Player.ChangingRole += events.OnRoleChange;
             Scp049.StartingRecall += events.OnReviving;
             Scp049.FinishingRecall += events.OnRevived;
@@ -68,7 +67,6 @@ namespace SCP008X
             Scp049.StartingRecall -= events.OnReviving;
             Scp049.FinishingRecall -= events.OnRevived;
             Server.RoundStarted -= events.OnRoundStart;
-            Player.MedicalItemUsed -= events.OnHealed;
             Server.RoundEnded -= events.OnRoundEnd;
             Player.Hurting -= events.OnPlayerHurt;
             Player.Dying -= events.OnPlayerDying;

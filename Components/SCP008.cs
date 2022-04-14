@@ -43,7 +43,7 @@ namespace SCP008X.Components
             if (ev.Player != ply)
                 return;
 
-            switch (ev.Player.Team)
+            switch (ev.Player.Role.Team)
             {
                 case Team.SCP:
                     switch (ev.NewRole)
@@ -55,7 +55,7 @@ namespace SCP008X.Components
                         case RoleType.Scp096:
                             Timing.KillCoroutines(ahp);
                             Log.Debug($"Killed coroutine for {ply.Nickname}: RetainAHP.", SCP008X.Instance.Config.DebugMode);
-                            ply.AdrenalineHealth = 500f;
+                            ply.ArtificialHealth = 500f;
                             break;
                     }
                     break;
@@ -92,17 +92,17 @@ namespace SCP008X.Components
             {
                 if(ply.Role == RoleType.Scp0492)
                 {
-                    if (ply.AdrenalineHealth <= curAHP)
+                    if (ply.ArtificialHealth <= curAHP)
                     {
-                        ply.AdrenalineHealth = curAHP;
+                        ply.ArtificialHealth = curAHP;
                     }
                     else
                     {
-                        if (ply.AdrenalineHealth >= SCP008X.Instance.Config.MaxAhp)
+                        if (ply.ArtificialHealth >= SCP008X.Instance.Config.MaxAhp)
                         {
-                            ply.AdrenalineHealth = SCP008X.Instance.Config.MaxAhp;
+                            ply.ArtificialHealth = SCP008X.Instance.Config.MaxAhp;
                         }
-                        curAHP = ply.AdrenalineHealth;
+                        curAHP = ply.ArtificialHealth;
                     }
                 }
 
@@ -116,7 +116,7 @@ namespace SCP008X.Components
                 ply.Health -= 2;
                 if(ply.Health <= 0)
                 {
-                    ply.Hurt(1,ply);
+                    ply.Hurt(1);
                     ply.Health++;
                     break;
                 }

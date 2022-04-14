@@ -1,18 +1,18 @@
 ﻿using RemoteAdmin;
 using CommandSystem;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Exiled.API.Features;
 using UnityEngine;
 using Exiled.Permissions.Extensions;
 using SCP008X.Components;
-using scp035.API;
 
 namespace SCP008X.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Infect : ICommand
     {
-        private Player Pull035() => Scp035Data.GetScp035();
         public string Command { get; } = "infect";
 
         public string[] Aliases { get; } = null;
@@ -32,7 +32,7 @@ namespace SCP008X.Commands
                 response = "Invalid player.";
                 return false;
             }
-            switch (ply.Team)
+            switch (ply.Role.Team)
             {
                 case Team.SCP:
                     response = "You can not infect SCP players.";
@@ -44,18 +44,7 @@ namespace SCP008X.Commands
                     response = "You can not infect the dead.";
                     return false;
             }
-            try
-            {
-                if(ply.UserId == Pull035().UserId)
-                {
-                    response = "You can not infect SCP players.";
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Log.Debug($"SCP-035, by Cyanox, is not installed. Skipping check.", SCP008X.Instance.Config.DebugMode);
-            }
+
             if(ply.ReferenceHub.TryGetComponent(out SCP008 s008))
             {
                 response = "This player is already infected.";
