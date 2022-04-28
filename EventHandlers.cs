@@ -59,7 +59,7 @@ namespace SCP008X
                 {
                     var leftover = ev.Amount - ev.Target.ArtificialHealth;
                     ev.Target.ArtificialHealth = 0;
-                    ev.Target.Hurt($"Hit by {ev.Attacker.DisplayNickname}", leftover);
+                    ev.Target.Hurt(leftover,$"Hit by {ev.Attacker.DisplayNickname}");
                 }
                 else
                 {
@@ -130,6 +130,6 @@ namespace SCP008X
             }
         }
         
-        public void OnShoot(ShootingEventArgs ev) => ev.IsAllowed = ev.Shooter.Team != Team.SCP;
+        public void OnShoot(ShootingEventArgs ev) => ev.IsAllowed = ev.Shooter.Role.Team != Team.SCP;
     }
 }

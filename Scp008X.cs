@@ -22,7 +22,7 @@ namespace SCP008X
         public override string Author => "DGvagabond";
         public override string Name => "Scp008X";
         public override Version Version { get; } = new Version(3, 1, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(4, 1, 5);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 1, 3);
 
         private EventHandlers _events;
 
@@ -49,7 +49,7 @@ namespace SCP008X
             PlayerEvents.Hurting += _events.OnHurt;
             PlayerEvents.Shooting += _events.OnShoot;
             PlayerEvents.Verified += _events.OnVerified;
-            PlayerEvents.ItemUsed += _events.OnHealed;
+            PlayerEvents.UsedItem += _events.OnHealed;
             PlayerEvents.ChangingRole += _events.OnRoleChange;
             
             Scp049.StartingRecall += _events.OnReviving;
@@ -64,7 +64,7 @@ namespace SCP008X
             PlayerEvents.Hurting -= _events.OnHurt;
             PlayerEvents.Shooting -= _events.OnShoot;
             PlayerEvents.Verified -= _events.OnVerified;
-            PlayerEvents.ItemUsed -= _events.OnHealed;
+            PlayerEvents.UsedItem -= _events.OnHealed;
             PlayerEvents.ChangingRole -= _events.OnRoleChange;
             
             Scp049.StartingRecall -= _events.OnReviving;
