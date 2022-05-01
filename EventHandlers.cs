@@ -76,7 +76,7 @@ namespace SCP008X
                 if(ev.NewRole == RoleType.Scp0492)
                 {
                     if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);
-                    ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                    CustomRole.Get(typeof(Scp008))?.AddRole(ev.Player);
                     ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp,Scp008X.Instance.Config.MaxAhp,0);
                 }
                 else if (ev.NewRole.GetTeam() != Team.SCP)
