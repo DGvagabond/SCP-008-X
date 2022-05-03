@@ -11,7 +11,6 @@ namespace SCP008X
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
-    using PlayerStatsSystem;
     
     public class Scp008 : CustomRole
     {

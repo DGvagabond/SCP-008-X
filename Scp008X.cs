@@ -11,6 +11,7 @@ namespace SCP008X
     using PlayerEvents = Exiled.Events.Handlers.Player;
     using ServerEvents = Exiled.Events.Handlers.Server;
     using Exiled.Events.Handlers;
+    using Exiled.CustomRoles.API;
     
     public class Scp008X : Plugin<Config>
     {
@@ -21,21 +22,21 @@ namespace SCP008X
 
         public override string Author => "DGvagabond";
         public override string Name => "Scp008X";
-        public override Version Version { get; } = new Version(3, 1, 1, 0);
+        public override Version Version { get; } = new Version(3, 1, 1, 1);
         public override Version RequiredExiledVersion { get; } = new Version(5, 2, 1);
 
         private EventHandlers _events;
 
         public override void OnEnabled()
         {
-            //RegisterItems();
+            RegisterRoles();
             RegisterEvents();
             base.OnEnabled();
         }
         
         public override void OnDisabled()
         {
-            //UnregisterItems();
+            UnregisterRoles();
             UnregisterEvents();
             base.OnDisabled();
         }
@@ -74,17 +75,17 @@ namespace SCP008X
             _events = null;
         }
 
-        private void RegisterItems()
+        private void RegisterRoles()
         {
-            Log.Debug("Loading items...");
+            Log.Debug("Loading custom roles...");
             
-            //new Dg008().TryRegister();
+            new Scp008().Register();
         }
-        private void UnregisterItems()
+        private void UnregisterRoles()
         {
-            Log.Debug("Unloading items...");
+            Log.Debug("Unloading custom roles...");
             
-            //new Dg008().TryUnregister();
+            new Scp008().Unregister();
         }
     }
 }

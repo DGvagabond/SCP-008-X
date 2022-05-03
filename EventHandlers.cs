@@ -102,7 +102,7 @@ namespace SCP008X
                 ev.IsAllowed = false;
                 ev.Target.DisableEffect(EffectType.Poisoned);
                 ev.Target.ClearInventory();
-                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
                 ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>");
                 return;
             }
