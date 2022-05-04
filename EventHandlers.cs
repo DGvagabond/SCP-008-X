@@ -30,7 +30,7 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || ev.Target == null) return;
+            if(ev.Attacker.Role==RoleType.Scp0492) ev.Amount=Scp008X.Instance.Config.ZombieDamage;
             if (ev.Target.ArtificialHealth >= 0)
             {
                 ev.IsAllowed = false;
@@ -69,29 +69,12 @@ namespace SCP008X
             }
         }
         
-        public void OnRoleChange(ChangingRoleEventArgs ev)
-        {
-            Timing.CallDelayed(1f, () =>
-            {
-                if(ev.NewRole == RoleType.Scp0492)
-                {
-                    if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);
-                    CustomRole.Get(typeof(Scp008))?.AddRole(ev.Player);
-                    ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp,Scp008X.Instance.Config.MaxAhp,0);
-                }
-                else if (ev.NewRole.GetTeam() != Team.SCP)
-                {
-                    ev.Player.ArtificialHealth = 0;
-                }
-            });
-        }
-        
         public void OnReviving(StartingRecallEventArgs ev)
         {
             if (!Scp008X.Instance.Config.BuffDoctor) return;
             
             ev.IsAllowed = false;
-            CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+            CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
             ev.Scp049.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
         }
         

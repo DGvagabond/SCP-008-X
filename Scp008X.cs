@@ -51,7 +51,6 @@ namespace SCP008X
             PlayerEvents.Shooting += _events.OnShoot;
             PlayerEvents.Verified += _events.OnVerified;
             PlayerEvents.UsedItem += _events.OnHealed;
-            PlayerEvents.ChangingRole += _events.OnRoleChange;
             
             Scp049.StartingRecall += _events.OnReviving;
             
@@ -66,7 +65,6 @@ namespace SCP008X
             PlayerEvents.Shooting -= _events.OnShoot;
             PlayerEvents.Verified -= _events.OnVerified;
             PlayerEvents.UsedItem -= _events.OnHealed;
-            PlayerEvents.ChangingRole -= _events.OnRoleChange;
             
             Scp049.StartingRecall -= _events.OnReviving;
             
