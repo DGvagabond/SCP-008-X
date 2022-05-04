@@ -54,6 +54,7 @@ namespace SCP008X
 
         private void OnHurting(HurtingEventArgs ev)
         {
+            if(ev.Attacker == null)return;
             if (ev.Attacker.Role == RoleType.Scp0492)
             {
                 var buff = Scp008X.Instance.Config.Scp008Buff;

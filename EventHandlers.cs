@@ -10,8 +10,6 @@ namespace SCP008X
     using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using MEC;
     
     public class EventHandlers
     {
@@ -30,6 +28,7 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
+            if(ev.Attacker == null)return;
             if(ev.Attacker.Role==RoleType.Scp0492) ev.Amount=Scp008X.Instance.Config.ZombieDamage;
             if (ev.Target.ArtificialHealth >= 0)
             {
@@ -80,6 +79,7 @@ namespace SCP008X
         
         public void OnDying(DyingEventArgs ev)
         {
+            if(ev.Killer == null)return;
             if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
             {
                 ev.IsAllowed = false;
