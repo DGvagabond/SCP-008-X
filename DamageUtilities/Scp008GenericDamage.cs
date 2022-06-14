@@ -19,6 +19,7 @@ namespace SCP008X.DamageUtilities
             this.Attacker = attacker.Footprint;
             this.Damage = damage;
             this.ServerLogsText = customReason;
+            Log.Debug($"Scp008x log: Target {Player}, Attacker {Attacker} Amount {Damage}", Scp008X.Instance.Config.DebugMode);
         }
 
         public Scp008GenericDamage(Player player, Player attacker, float damageAmount)
@@ -26,8 +27,6 @@ namespace SCP008X.DamageUtilities
             this.Player = player;
             this.Attacker = attacker.Footprint;
             this.Damage = damageAmount;
-
-            Log.Debug($"Target {player}, Attacker {Attacker} Amount {damageAmount}", Scp008X.Instance.Config.DebugMode);
         }
 
         public override bool AllowSelfDamage => true;
