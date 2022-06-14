@@ -12,7 +12,8 @@ namespace SCP008X
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
-    
+    using MEC;
+
     [CustomRole(RoleType.Scp0492)]
     public class Scp008 : CustomRole
     {
@@ -27,7 +28,8 @@ namespace SCP008X
         {
             Log.Debug($"{nameof(SubscribeEvents)}: Loading 008 custom role events..", Scp008X.Instance.Config.DebugMode);
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
-            Exiled.Events.Handlers.Player.ChangingRole += OnSpawning;
+            Exiled.Events.Handlers.Player.Spawning += OnSpawning;
+            Exiled.Events.Handlers.Player.ChangingRole += OnRoleChange;
             base.SubscribeEvents();
         }
 
@@ -35,17 +37,49 @@ namespace SCP008X
         {
             Log.Debug($"{nameof(UnsubscribeEvents)}: Unloading 008 custom role events..", Scp008X.Instance.Config.DebugMode);
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
-            Exiled.Events.Handlers.Player.ChangingRole -= OnSpawning;
+            Exiled.Events.Handlers.Player.Spawning -= OnSpawning;
+            Exiled.Events.Handlers.Player.ChangingRole += OnRoleChange;
             base.UnsubscribeEvents();
         }
 
-        private void OnSpawning(ChangingRoleEventArgs ev)
+        private void OnSpawning(SpawningEventArgs ev)
         {
-            if(ev.NewRole == RoleType.Scp0492)
+            if (ev.Player.Role == RoleType.Scp0492)
             {
-                if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);
-                ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
-                ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                Log.Info("OnSpawning 1");
+                Timing.CallDelayed(.5f, delegate
+                {
+                    Log.Info("OnSpawning 2");
+                    if (ev.Player.GetEffect(EffectType.Scp207).IsEnabled)
+                    {
+                        ev.Player.DisableEffect(EffectType.Scp207);
+                    }
+                    ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
+                    ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                });
+            }
+            else if (ev.Player.Role.Side != Side.Scp)
+            {
+                ev.Player.ArtificialHealth = 0;
+            }
+        }
+
+
+        private void OnRoleChange(ChangingRoleEventArgs ev)
+        {
+            if (ev.NewRole == RoleType.Scp0492)
+            {
+                Log.Info("OnRoleChange 1");
+                Timing.CallDelayed(.5f, delegate
+                {
+                    Log.Info("OnRoleChange 2");
+                    if (ev.Player.GetEffect(EffectType.Scp207).IsEnabled)
+                    {
+                        ev.Player.DisableEffect(EffectType.Scp207);
+                    }
+                    ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
+                    ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                });
             }
             else if (ev.NewRole.GetTeam() != Team.SCP)
             {

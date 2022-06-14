@@ -88,19 +88,14 @@ namespace SCP008X
         {
             if (ev.Killer == null && ev.Handler.Type is DamageType.Poison)
             {
-                Timing.CallDelayed(1.5f, delegate
-                {
-                    Log.Info("Ondying hmm 4 ");
-                    CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
-                });
+                ev.IsAllowed = false;
+                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
                 return;
             }
             if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
             {
-                Timing.CallDelayed(1.5f, delegate
-                {
-                    CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
-                });
+                ev.IsAllowed = false;
+                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
                 ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>");
                 return;
             }
