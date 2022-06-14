@@ -45,6 +45,7 @@ namespace SCP008X
             {
                 if(ev.Player.GetEffect(EffectType.Scp207).IsEnabled) ev.Player.DisableEffect(EffectType.Scp207);
                 ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
+                ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
             }
             else if (ev.NewRole.GetTeam() != Team.SCP)
             {
@@ -54,16 +55,19 @@ namespace SCP008X
 
         private void OnHurting(HurtingEventArgs ev)
         {
-            if(ev.Attacker == null)return;
+            if (ev.Attacker == null)
+            {
+                return;
+            }
             if (ev.Attacker.Role == RoleType.Scp0492)
             {
                 var buff = Scp008X.Instance.Config.Scp008Buff;
                 var max = Scp008X.Instance.Config.MaxAhp;
                 ev.Attacker.AddAhp(buff > 0 && ev.Attacker.ArtificialHealth + buff < max ? buff : (ushort)0,Scp008X.Instance.Config.MaxAhp,0);
 
-                if (Scp008X.Instance.Rng.Next(100) > Scp008X.Instance.Config.InfectionChance)
+                if (UnityEngine.Random.Range(0, 100) <= Scp008X.Instance.Config.InfectionChance)
                 {
-                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}");
+                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 5);
                     ev.Target.EnableEffect(EffectType.Poisoned);
                 }    
             }

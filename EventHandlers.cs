@@ -10,7 +10,9 @@ namespace SCP008X
     using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
-    
+    using SCP008X.DamageUtilities;
+    using MEC;
+
     public class EventHandlers
     {
         public void OnRoundStart()
@@ -28,31 +30,36 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
-            if(ev.Attacker == null)return;
-            if(ev.Attacker.Role==RoleType.Scp0492) ev.Amount=Scp008X.Instance.Config.ZombieDamage;
+            if (ev.Attacker == null) {
+                return;
+            }
+
+            if (ev.Attacker.Role == RoleType.Scp0492)
+            {
+                ev.Amount = Scp008X.Instance.Config.ZombieDamage;
+                return;
+            }
+
             if (ev.Target.ArtificialHealth >= 0)
             {
                 ev.IsAllowed = false;
-                if (ev.Target.ArtificialHealth <= ev.Amount)
-                {
-                    var leftover = ev.Amount - ev.Target.ArtificialHealth;
-                    ev.Target.ArtificialHealth = 0;
-                    ev.Target.Hurt(leftover,$"Hit by {ev.Attacker.DisplayNickname}");
-                    return;
-                }
-                ev.Target.ArtificialHealth -= (ushort)ev.Amount;
+                var damageToApply = ev.Amount - ev.Target.ArtificialHealth;
+                ev.Target.Hurt(new Scp008GenericDamage(ev.Target, ev.Attacker, damageToApply, $"Hit by {ev.Attacker.DisplayNickname}"));
             }
         }
         
         public void OnHealed(UsedItemEventArgs ev)
         {
-            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) return;
+            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) 
+            {
+                return;
+            }
 
-            var chance = Scp008X.Instance.Rng.Next(1, 100);
+            var chance = UnityEngine.Random.Range(1, 100);
             switch (ev.Item.Type)
             {
                 case ItemType.Medkit:
-                    if (chance > Scp008X.Instance.Config.CureChance)
+                    if (chance <= Scp008X.Instance.Config.CureChance)
                     {
                         ev.Player.DisableEffect(EffectType.Poisoned);
                         Log.Debug($"{ev.Player.Nickname} cured themselves with {chance}% probability.", Scp008X.Instance.Config.DebugMode);
@@ -79,13 +86,21 @@ namespace SCP008X
         
         public void OnDying(DyingEventArgs ev)
         {
-            if(ev.Killer == null)return;
+            if (ev.Killer == null && ev.Handler.Type is DamageType.Poison)
+            {
+                Timing.CallDelayed(1.5f, delegate
+                {
+                    Log.Info("Ondying hmm 4 ");
+                    CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+                });
+                return;
+            }
             if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
             {
-                ev.IsAllowed = false;
-                ev.Target.DisableEffect(EffectType.Poisoned);
-                ev.Target.ClearInventory();
-                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+                Timing.CallDelayed(1.5f, delegate
+                {
+                    CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+                });
                 ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>");
                 return;
             }
