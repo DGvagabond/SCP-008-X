@@ -57,59 +57,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Assembly-CSharp-Publicized.dll</HintPath>
+    <Reference Include="scp035">
+      <HintPath>..\..\EXILED Plugins\Ref\scp035.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.API.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SerpentsHand">
+      <HintPath>..\..\EXILED Plugins\Ref\SerpentsHand.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Bootstrap, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.Bootstrap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.CreditTags.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.CustomItems.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.Events.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.Loader.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.9.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.Permissions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EXILED.2.9.2-beta\lib\net472\Exiled.Updater.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SCP-343" HintPath="$(EXILED_REFERENCES)\SCP-343.dll" Private="false" />
-    <Reference Include="SCP-343, Version=3.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\SCP-343.dll</HintPath>
-    </Reference>
-    <Reference Include="scp035" HintPath="$(EXILED_REFERENCES)\scp035.dll" Private="false" />
-    <Reference Include="SCP999X, Version=1.0.0.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\SCP-999-X\bin\Debug\SCP999X.dll</HintPath>
-    </Reference>
-    <Reference Include="SerpentsHand" HintPath="$(EXILED_REFERENCES)\SerpentsHand.dll" Private="false" />
-    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
-    <Reference Include="CommandSystem.Core" HintPath="$(EXILED_REFERENCES)\CommandSystem.Core.dll" Private="false" />
-    <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
-    <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
-    <Reference Include="UnityEngine" HintPath="$(EXILED_REFERENCES)\UnityEngine.dll" Private="false" />
-    <Reference Include="UnityEngine.AudioModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AudioModule.dll" Private="false" />
-    <Reference Include="UnityEngine.AnimationModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AnimationModule.dll" Private="false" />
-    <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
-    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -118,22 +71,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\EXILED Plugins\Ref\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\EXILED Plugins\Ref\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\SCP008XAPI.cs" />
     <Compile Include="Commands\Cure.cs" />
     <Compile Include="Commands\Infect.cs" />
-    <Compile Include="Components\RetainAHP.cs" />
+    <Compile Include="Components\GenericCustom008Damage.cs" />
     <Compile Include="Components\SCP008.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Items\Scp0081.cs" />
-    <Compile Include="Scp008X.cs" />
+    <Compile Include="SCP008X.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="EXILED">
+      <Version>5.2.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
