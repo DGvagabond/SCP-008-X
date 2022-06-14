@@ -46,10 +46,8 @@ namespace SCP008X
         {
             if (ev.Player.Role == RoleType.Scp0492)
             {
-                Log.Info("OnSpawning 1");
                 Timing.CallDelayed(.5f, delegate
                 {
-                    Log.Info("OnSpawning 2");
                     if (ev.Player.GetEffect(EffectType.Scp207).IsEnabled)
                     {
                         ev.Player.DisableEffect(EffectType.Scp207);
@@ -69,10 +67,8 @@ namespace SCP008X
         {
             if (ev.NewRole == RoleType.Scp0492)
             {
-                Log.Info("OnRoleChange 1");
                 Timing.CallDelayed(.5f, delegate
                 {
-                    Log.Info("OnRoleChange 2");
                     if (ev.Player.GetEffect(EffectType.Scp207).IsEnabled)
                     {
                         ev.Player.DisableEffect(EffectType.Scp207);
