@@ -19,7 +19,7 @@ namespace SCP008X
     {
         public override uint Id { get; set; } = 008;
         public override RoleType Role { get; set; } = RoleType.Scp0492;
-        public override int MaxHealth { get; set; } = Scp008X.Instance.Config.ZombieHealth;
+        public override int MaxHealth { get; set; } = Scp008X.Instance.Config.MaxZombieHealth;
         public override string Name { get; set; } = "SCP-008";
         public override string Description { get; set; } =
             "An instance of SCP-008 that spreads the infection with each hit.";
@@ -54,6 +54,7 @@ namespace SCP008X
                     }
                     ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
                     ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                    ev.Player.MaxHealth = MaxHealth;
                 });
             }
             else if (ev.Player.Role.Side != Side.Scp)
@@ -75,6 +76,7 @@ namespace SCP008X
                     }
                     ev.Player.AddAhp(Scp008X.Instance.Config.StartingAhp, Scp008X.Instance.Config.MaxAhp, 0);
                     ev.Player.Health = Scp008X.Instance.Config.ZombieHealth;
+                    ev.Player.MaxHealth = MaxHealth;
                 });
             }
             else if (ev.NewRole.GetTeam() != Team.SCP)

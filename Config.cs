@@ -27,7 +27,10 @@ namespace SCP008X
         public bool BuffDoctor { get; set; } = false;
 
         [Description("Base zombie health.")]
-        public int ZombieHealth { get; set; } = 300;
+        public int ZombieHealth { get; set; } = 500;
+
+        [Description("Max zombie health.")]
+        public int MaxZombieHealth { get; set; } = 700;
 
         [Description("How much AHP should be given to Zombies?")]
         public ushort Scp008Buff { get; set; } = 10;
