@@ -88,8 +88,11 @@ namespace SCP008X
 
             if(ev?.Killer?.Role == RoleType.Scp0492){
                 ev.IsAllowed = false;
-                ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
                 CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+                Timing.CallDelayed(1f, () =>
+                {
+                    ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
+                });
             }
         }
 

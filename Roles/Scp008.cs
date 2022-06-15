@@ -92,7 +92,7 @@ namespace SCP008X
                 if (UnityEngine.Random.Range(0, 100) <= Scp008X.Instance.Config.InfectionChance)
                 {
                     ev.Target.EnableEffect(EffectType.Poisoned);
-                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 100);
+                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 5);
                 }    
             }
         }
