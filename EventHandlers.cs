@@ -39,13 +39,6 @@ namespace SCP008X
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
                 return;
             }
-
-            if (ev.Target.ArtificialHealth >= 0)
-            {
-                ev.IsAllowed = false;
-                var damageToApply = ev.Amount - ev.Target.ArtificialHealth;
-                ev.Target.Hurt(new Scp008GenericDamage(ev.Target, ev.Attacker, damageToApply, $"Hit by {ev.Attacker.DisplayNickname}"));
-            }
         }
         
         public void OnHealed(UsedItemEventArgs ev)
@@ -86,22 +79,29 @@ namespace SCP008X
         
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Killer == null && ev.Handler.Type is DamageType.Poison)
+            if (ev.Killer == null && ev?.Handler?.Type is DamageType.Poison)
             {
                 ev.IsAllowed = false;
                 CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
                 return;
             }
-            if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
-            {
+
+            if(ev?.Killer?.Role == RoleType.Scp0492){
                 ev.IsAllowed = false;
+                ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
                 CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
-                ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>");
-                return;
             }
-            ev.Killer.ShowHint($"Killed <b><color=red>{ev.Target.Nickname}</color></b>");
         }
-        
-        public void OnShoot(ShootingEventArgs ev) => ev.IsAllowed = ev.Shooter.Role.Team != Team.SCP;
+
+        public void OnShoot(ShootingEventArgs ev)
+        {
+            Player targetPlayer = Player.Get(ev.TargetNetId);
+            if(targetPlayer != null){
+                if(ev.Shooter.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
+                    ev.IsAllowed = false;
+                    return;
+                }
+            }
+        }
     }
 }

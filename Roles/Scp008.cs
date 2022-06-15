@@ -57,10 +57,6 @@ namespace SCP008X
                     ev.Player.MaxHealth = MaxHealth;
                 });
             }
-            else if (ev.Player.Role.Side != Side.Scp)
-            {
-                ev.Player.ArtificialHealth = 0;
-            }
         }
 
 
@@ -79,10 +75,6 @@ namespace SCP008X
                     ev.Player.MaxHealth = MaxHealth;
                 });
             }
-            else if (ev.NewRole.GetTeam() != Team.SCP)
-            {
-                ev.Player.ArtificialHealth = 0;
-            }
         }
 
         private void OnHurting(HurtingEventArgs ev)
@@ -99,8 +91,8 @@ namespace SCP008X
 
                 if (UnityEngine.Random.Range(0, 100) <= Scp008X.Instance.Config.InfectionChance)
                 {
-                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 5);
                     ev.Target.EnableEffect(EffectType.Poisoned);
+                    ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 100);
                 }    
             }
         }
