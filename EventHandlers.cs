@@ -73,7 +73,7 @@ namespace SCP008X
             if (!Scp008X.Instance.Config.BuffDoctor) return;
             
             ev.IsAllowed = false;
-            CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+            CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
             ev.Scp049.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
         }
         
@@ -82,14 +82,14 @@ namespace SCP008X
             if (ev.Killer == null && ev?.Handler?.Type is DamageType.Poison)
             {
                 ev.IsAllowed = false;
-                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
                 return;
             }
 
             if(ev?.Killer?.Role == RoleType.Scp0492){
                 ev.IsAllowed = false;
-                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
-                Timing.CallDelayed(1f, () =>
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+                Timing.CallDelayed(1f, delegate
                 {
                     ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
                 });
