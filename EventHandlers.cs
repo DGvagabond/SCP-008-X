@@ -10,7 +10,9 @@ namespace SCP008X
     using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
-    
+    using SCP008X.DamageUtilities;
+    using MEC;
+
     public class EventHandlers
     {
         public void OnRoundStart()
@@ -28,31 +30,29 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
-            if(ev.Attacker == null)return;
-            if(ev.Attacker.Role==RoleType.Scp0492) ev.Amount=Scp008X.Instance.Config.ZombieDamage;
-            if (ev.Target.ArtificialHealth >= 0)
+            if (ev.Attacker == null) {
+                return;
+            }
+
+            if (ev.Attacker.Role == RoleType.Scp0492)
             {
-                ev.IsAllowed = false;
-                if (ev.Target.ArtificialHealth <= ev.Amount)
-                {
-                    var leftover = ev.Amount - ev.Target.ArtificialHealth;
-                    ev.Target.ArtificialHealth = 0;
-                    ev.Target.Hurt(leftover,$"Hit by {ev.Attacker.DisplayNickname}");
-                    return;
-                }
-                ev.Target.ArtificialHealth -= (ushort)ev.Amount;
+                ev.Amount = Scp008X.Instance.Config.ZombieDamage;
+                return;
             }
         }
         
         public void OnHealed(UsedItemEventArgs ev)
         {
-            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) return;
+            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) 
+            {
+                return;
+            }
 
-            var chance = Scp008X.Instance.Rng.Next(1, 100);
+            var chance = UnityEngine.Random.Range(1, 100);
             switch (ev.Item.Type)
             {
                 case ItemType.Medkit:
-                    if (chance > Scp008X.Instance.Config.CureChance)
+                    if (chance <= Scp008X.Instance.Config.CureChance)
                     {
                         ev.Player.DisableEffect(EffectType.Poisoned);
                         Log.Debug($"{ev.Player.Nickname} cured themselves with {chance}% probability.", Scp008X.Instance.Config.DebugMode);
@@ -73,25 +73,38 @@ namespace SCP008X
             if (!Scp008X.Instance.Config.BuffDoctor) return;
             
             ev.IsAllowed = false;
-            CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
+            CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
             ev.Scp049.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
         }
         
         public void OnDying(DyingEventArgs ev)
         {
-            if(ev.Killer == null)return;
-            if (ev.Target.IsHuman && ev.Target.GetEffect(EffectType.Poisoned).IsEnabled)
+            if (ev.Killer == null && ev?.Handler?.Type is DamageType.Poison)
             {
                 ev.IsAllowed = false;
-                ev.Target.DisableEffect(EffectType.Poisoned);
-                ev.Target.ClearInventory();
-                CustomRole.Get(typeof(Scp008)).AddRole(ev.Target);
-                ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>");
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
                 return;
             }
-            ev.Killer.ShowHint($"Killed <b><color=red>{ev.Target.Nickname}</color></b>");
+
+            if(ev?.Killer?.Role == RoleType.Scp0492){
+                ev.IsAllowed = false;
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+                Timing.CallDelayed(1f, delegate
+                {
+                    ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
+                });
+            }
         }
-        
-        public void OnShoot(ShootingEventArgs ev) => ev.IsAllowed = ev.Shooter.Role.Team != Team.SCP;
+
+        public void OnShoot(ShootingEventArgs ev)
+        {
+            Player targetPlayer = Player.Get(ev.TargetNetId);
+            if(targetPlayer != null){
+                if(ev.Shooter.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
+                    ev.IsAllowed = false;
+                    return;
+                }
+            }
+        }
     }
 }
