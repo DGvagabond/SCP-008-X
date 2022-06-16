@@ -17,9 +17,6 @@ namespace SCP008X
     {
         internal static Scp008X Instance { get; } = new Scp008X();
 
-        private Scp008X() { }
-        public Random Rng = new Random();
-
         public override string Author => "DGvagabond";
         public override string Name => "Scp008X";
         public override Version Version { get; } = new Version(3, 1, 2, 0);
