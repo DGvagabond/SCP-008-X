@@ -17,10 +17,10 @@ namespace SCP008X
         [Description("Only enable this if you're looking for bug sources!")]
         public bool DebugMode { get; set; } = false;
 
-        [Description("Percent change to create infection.")]
+        [Description("Percent chance to create infection.")]
         public int InfectionChance { get; set; } = 100;
 
-        [Description("Percent change to successfully cure.")]
+        [Description("Percent chance to successfully cure.")]
         public int CureChance { get; set; } = 50;
 
         [Description("Allow SCP-049 to instantly revive targets?")]
