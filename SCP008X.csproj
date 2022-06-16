@@ -60,12 +60,6 @@
     <Reference Include="Mirror">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="scp035">
-      <HintPath>..\..\EXILED Plugins\Ref\scp035.dll</HintPath>
-    </Reference>
-    <Reference Include="SerpentsHand">
-      <HintPath>..\..\EXILED Plugins\Ref\SerpentsHand.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
