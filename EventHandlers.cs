@@ -29,22 +29,26 @@ namespace SCP008X
         
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null) {
-                return;
-            }
+            if (ev.Attacker == null) return;
 
-            if (ev.Attacker.Role == RoleType.Scp0492)
-            {
+            if (ev.Attacker.Role == RoleType.Scp0492) {
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
+            }
+            
+            if (ev.Target.ArtificialHealth >= 0)
+            {
+                ev.IsAllowed = false;
+                if (ev.Target.ArtificialHealth <= ev.Amount) {
+                    var leftover = ev.Amount - ev.Target.ArtificialHealth;
+                    ev.Target.ArtificialHealth = 0;
+                    ev.Target.Health -= leftover;
+                }
             }
         }
         
         public void OnHealed(UsedItemEventArgs ev)
         {
-            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) 
-            {
-                return;
-            }
+            if (!ev.Player.GetEffect(EffectType.Poisoned).IsEnabled) return;
 
             var chance = UnityEngine.Random.Range(1, 100);
             switch (ev.Item.Type)
