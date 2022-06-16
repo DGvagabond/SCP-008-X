@@ -7,7 +7,6 @@
 namespace SCP008X
 {
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
