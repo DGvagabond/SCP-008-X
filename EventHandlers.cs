@@ -10,7 +10,6 @@ namespace SCP008X
     using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
-    using SCP008X.DamageUtilities;
     using MEC;
 
     public class EventHandlers
@@ -37,7 +36,6 @@ namespace SCP008X
             if (ev.Attacker.Role == RoleType.Scp0492)
             {
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
-                return;
             }
         }
         
@@ -79,14 +77,14 @@ namespace SCP008X
         
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Killer == null && ev?.Handler?.Type is DamageType.Poison)
+            if (ev.Killer == null && ev.Handler?.Type is DamageType.Poison)
             {
                 ev.IsAllowed = false;
                 CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
                 return;
             }
 
-            if(ev?.Killer?.Role == RoleType.Scp0492){
+            if(ev.Killer?.Role == RoleType.Scp0492){
                 ev.IsAllowed = false;
                 CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
                 Timing.CallDelayed(1f, delegate
@@ -102,7 +100,6 @@ namespace SCP008X
             if(targetPlayer != null){
                 if(ev.Shooter.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
                     ev.IsAllowed = false;
-                    return;
                 }
             }
         }
