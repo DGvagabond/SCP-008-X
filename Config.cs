@@ -12,10 +12,10 @@ namespace SCP008X
     public sealed class Config : IConfig
     {
         /// <inheritdoc />
+        [Description("Join our Discord for instant support: discord.gg/Ffj29UTg3q")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Only enable this if you're looking for bug sources!")]
-        public bool DebugMode { get; set; } = false;
+        public bool Debug { get; set; }
 
         [Description("Percent chance to create infection.")]
         public int InfectionChance { get; set; } = 100;

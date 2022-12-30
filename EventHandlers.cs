@@ -4,10 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp049;
+using PlayerRoles;
+
 namespace SCP008X
 {
     using Exiled.CustomRoles.API.Features;
-    using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
     using MEC;
@@ -16,32 +19,26 @@ namespace SCP008X
     {
         public void OnRoundStart()
         {
-            if (Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null)
-            {
-                Cassie.Message(Scp008X.Instance.Config.Announcement);
-            }
+            if(Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null) Cassie.Message(Scp008X.Instance.Config.Announcement);
         }
         
-        public void OnVerified(VerifiedEventArgs ev)
-        {
-            ev.Player.SendConsoleMessage("This server uses SCP-008-X, all zombies have been reworked!", "yellow");
-        }
-        
+        public void OnVerified(VerifiedEventArgs ev) => ev.Player.SendConsoleMessage("This server uses SCP-008-X, all zombies have been reworked.", "yellow");
+
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null) return;
+            if (ev.Player == null) return;
 
-            if (ev.Attacker.Role == RoleType.Scp0492) {
+            if (ev.Player.Role == RoleTypeId.Scp0492) {
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
             }
             
-            if (ev.Target.ArtificialHealth >= 0)
+            if (ev.Player.ArtificialHealth >= 0)
             {
                 ev.IsAllowed = false;
-                if (ev.Target.ArtificialHealth <= ev.Amount) {
-                    var leftover = ev.Amount - ev.Target.ArtificialHealth;
-                    ev.Target.ArtificialHealth = 0;
-                    ev.Target.Health -= leftover;
+                if (ev.Player.ArtificialHealth <= ev.Amount) {
+                    var leftover = ev.Amount - ev.Player.ArtificialHealth;
+                    ev.Player.ArtificialHealth = 0;
+                    ev.Player.Health -= leftover;
                 }
             }
         }
@@ -57,15 +54,15 @@ namespace SCP008X
                     if (chance <= Scp008X.Instance.Config.CureChance)
                     {
                         ev.Player.DisableEffect(EffectType.Poisoned);
-                        Log.Debug($"{ev.Player.Nickname} cured themselves with {chance}% probability.", Scp008X.Instance.Config.DebugMode);
+                        Log.Debug($"{ev.Player.Nickname} cured themselves with {chance}% probability.");
                         return;
                     }
 
-                    Log.Debug($"{ev.Player.Nickname} failed to cure themselves with {chance}% probability.", Scp008X.Instance.Config.DebugMode);
+                    Log.Debug($"{ev.Player.Nickname} failed to cure themselves with {chance}% probability.");
                     break;
                 case ItemType.SCP500:
                     ev.Player.DisableEffect(EffectType.Poisoned);
-                    Log.Debug($"{ev.Player.Nickname} cured themselves with SCP-500.", Scp008X.Instance.Config.DebugMode);
+                    Log.Debug($"{ev.Player.Nickname} cured themselves with SCP-500.");
                     break;
             }
         }
@@ -76,33 +73,33 @@ namespace SCP008X
             
             ev.IsAllowed = false;
             CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
-            ev.Scp049.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
+            ev.Player.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
         }
         
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Killer == null && ev.Handler?.Type is DamageType.Poison)
+            if (ev.Player == null && ev.DamageHandler?.Type is DamageType.Poison)
             {
                 ev.IsAllowed = false;
-                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Player);
                 return;
             }
 
-            if(ev.Killer?.Role == RoleType.Scp0492){
+            if(ev.Player?.Role == RoleTypeId.Scp0492){
                 ev.IsAllowed = false;
-                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
+                CustomRole.Get(typeof(Scp008))?.AddRole(ev.Player);
                 Timing.CallDelayed(1f, delegate
                 {
-                    ev.Killer.ShowHint($"Infected <b><color=red>{ev.Target.Nickname}</color></b>", 5);
+                    ev.Player.ShowHint($"Infected <b><color=red>{ev.Player.Nickname}</color></b>", 5);
                 });
             }
         }
 
         public void OnShoot(ShootingEventArgs ev)
         {
-            Player targetPlayer = Player.Get(ev.TargetNetId);
+            var targetPlayer = Player.Get(ev.TargetNetId);
             if(targetPlayer != null){
-                if(ev.Shooter.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
+                if(ev.Player.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
                     ev.IsAllowed = false;
                 }
             }
