@@ -4,16 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.Events.EventArgs.Player;
-using PlayerRoles;
-
 namespace SCP008X
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Events.EventArgs.Player;
     using MEC;
+    using PlayerRoles;
 
     [CustomRole(RoleTypeId.Scp0492)]
     public class Scp008 : CustomRole
@@ -23,7 +22,7 @@ namespace SCP008X
         public override int MaxHealth { get; set; } = Scp008X.Instance.Config.MaxZombieHealth;
         public override string Name { get; set; } = "SCP-008";
         public override string Description { get; set; } =
-            "An instance of SCP-008 that spreads the infection with each hit.";
+            "An instance of SCP-008 that spreads its infection with each hit.";
         public override string CustomInfo { get; set; } = "SCP-008";
         protected override void SubscribeEvents()
         {
@@ -56,7 +55,6 @@ namespace SCP008X
             }
         }
 
-
         private void OnRoleChange(ChangingRoleEventArgs ev)
         {
             if (ev.NewRole == RoleTypeId.Scp0492) {
@@ -73,16 +71,14 @@ namespace SCP008X
         private void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Player == null) return;
-            if (ev.Player.Role == RoleTypeId.Scp0492) {
-                var buff = Scp008X.Instance.Config.Scp008Buff;
-                var max = Scp008X.Instance.Config.MaxAhp;
-                ev.Player.AddAhp(buff > 0 && ev.Player.ArtificialHealth + buff < max ? buff : (ushort)0,Scp008X.Instance.Config.MaxAhp,0);
+            if (ev.Player.Role != RoleTypeId.Scp0492) return;
+            var buff = Scp008X.Instance.Config.Scp008Buff;
+            var max = Scp008X.Instance.Config.MaxAhp;
+            ev.Player.AddAhp(buff > 0 && ev.Player.ArtificialHealth + buff < max ? buff : (ushort)0,Scp008X.Instance.Config.MaxAhp,0);
 
-                if (UnityEngine.Random.Range(0, 100) <= Scp008X.Instance.Config.InfectionChance) {
-                    ev.Player.EnableEffect(EffectType.Poisoned);
-                    ev.Player.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 5);
-                }    
-            }
+            if (UnityEngine.Random.Range(0, 100) > Scp008X.Instance.Config.InfectionChance) return;
+            ev.Player.EnableEffect(EffectType.Poisoned);
+            ev.Player.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{Scp008X.Instance.Config.InfectionAlert}", 5);
         }
     }
 }
