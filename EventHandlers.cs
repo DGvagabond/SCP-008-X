@@ -27,10 +27,10 @@ namespace SCP008X
         public void OnHurt(HurtingEventArgs ev)
         {
             if (ev.Player == null) return;
+            
+            if(ev.Attacker.Role == RoleTypeId.Scp049 && Scp008X.Instance.Config.BuffDoctor) ev.Player.Kill(ev.DamageHandler.Type);
 
-            if (ev.Player.Role == RoleTypeId.Scp0492) {
-                ev.Amount = Scp008X.Instance.Config.ZombieDamage;
-            }
+            if (ev.Player.Role == RoleTypeId.Scp0492) ev.Amount = Scp008X.Instance.Config.ZombieDamage;
             
             if (ev.Player.ArtificialHealth >= 0)
             {
@@ -40,6 +40,8 @@ namespace SCP008X
                     ev.Player.ArtificialHealth = 0;
                     ev.Player.Health -= leftover;
                 }
+                
+                if(ev.Player.Health <= 0) ev.Player.Kill(ev.DamageHandler.Type);
             }
         }
         
