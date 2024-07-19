@@ -51,6 +51,8 @@ namespace SCP008X
             PlayerEvents.UsedItem += _events.OnHealed;
             
             Scp049.StartingRecall += _events.OnReviving;
+            Scp049.ActivatingSense += _events.OnSense;
+            Scp049.SendingCall += _events.OnCall;
             
             ServerEvents.RoundStarted += _events.OnRoundStart;
         }
@@ -65,6 +67,8 @@ namespace SCP008X
             PlayerEvents.UsedItem -= _events.OnHealed;
             
             Scp049.StartingRecall -= _events.OnReviving;
+            Scp049.ActivatingSense -= _events.OnSense;
+            Scp049.SendingCall -= _events.OnCall;
             
             ServerEvents.RoundStarted += _events.OnRoundStart;
 
@@ -74,13 +78,11 @@ namespace SCP008X
         private void RegisterRoles()
         {
             Log.Debug("Loading custom roles...");
-            
             new Scp008().Register();
         }
         private void UnregisterRoles()
         {
             Log.Debug("Unloading custom roles...");
-            
             new Scp008().Unregister();
         }
     }

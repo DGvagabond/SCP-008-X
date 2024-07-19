@@ -14,7 +14,6 @@ namespace SCP008X
     using Exiled.Events.EventArgs.Scp049;
     using PlayerRoles;
     using PluginAPI.Core;
-    using Respawning;
 
     public class EventHandlers
     {
@@ -76,6 +75,10 @@ namespace SCP008X
             CustomRole.Get(typeof(Scp008))?.AddRole(ev.Target);
             ev.Player.ShowHint($"Revived <b><color=green>{ev.Target.Nickname}</color></b>");
         }
+
+        public void OnSense(ActivatingSenseEventArgs ev) => ev.Duration = Scp008X.Instance.Config.SenseDuration;
+
+        public void OnCall(SendingCallEventArgs ev) => ev.Duration = Scp008X.Instance.Config.CallDuration;
         
         public void OnDying(DyingEventArgs ev)
         {
