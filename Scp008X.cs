@@ -4,14 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.Events.Handlers;
+
 namespace SCP008X
 {
     using System;
     using Exiled.API.Features;
-    using PlayerEvents = Exiled.Events.Handlers.Player;
-    using ServerEvents = Exiled.Events.Handlers.Server;
-    using Exiled.Events.Handlers;
     using Exiled.CustomRoles.API;
+    using PlayerEvents = Player;
+    using ServerEvents = Server;
     
     public class Scp008X : Plugin<Config>
     {
@@ -19,8 +20,8 @@ namespace SCP008X
 
         public override string Author => "DGvagabond";
         public override string Name => "Scp008X";
-        public override Version Version { get; } = new Version(4, 0, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
+        public override Version Version { get; } = new Version(5, 0, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(8, 10, 1);
 
         private EventHandlers _events;
 

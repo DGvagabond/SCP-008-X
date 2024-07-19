@@ -4,16 +4,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Scp049;
-using PlayerRoles;
+using Exiled.CustomRoles.API.Features;
 
 namespace SCP008X
 {
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.API.Features;
-    using Exiled.API.Enums;
     using MEC;
+    using Exiled.API.Enums;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp049;
+    using PlayerRoles;
+    using PluginAPI.Core;
+    using Respawning;
 
     public class EventHandlers
     {
@@ -98,11 +99,8 @@ namespace SCP008X
         public void OnShoot(ShootingEventArgs ev)
         {
             var targetPlayer = Player.Get(ev.TargetNetId);
-            if(targetPlayer != null){
-                if(ev.Player.Role.Side is Side.Scp && targetPlayer.Role.Side is Side.Scp){
-                    ev.IsAllowed = false;
-                }
-            }
+            if (targetPlayer == null) return;
+            if(ev.Player.Role.Side is Side.Scp && targetPlayer.Team is Team.SCPs){ ev.IsAllowed = false; }
         }
     }
 }
