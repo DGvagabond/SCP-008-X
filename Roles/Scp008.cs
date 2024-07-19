@@ -76,7 +76,7 @@ namespace SCP008X
             if (ev.Player.Role == RoleTypeId.Scp0492) {
                 var buff = Scp008X.Instance.Config.Scp008Buff;
                 var max = Scp008X.Instance.Config.MaxAhp;
-                ev.Player.AddAhp(buff > 0 && ev.Player.ArtificialHealth + buff < max ? buff : (ushort)0,Scp008X.Instance.Config.MaxAhp,0);
+                ev.Player.AddAhp(buff > 0 && ev.Player.HumeShield + buff < max ? buff : (ushort)0,Scp008X.Instance.Config.MaxAhp,0);
 
                 if (UnityEngine.Random.Range(0, 100) <= Scp008X.Instance.Config.InfectionChance) {
                     ev.Player.EnableEffect(EffectType.Poisoned);

@@ -21,9 +21,6 @@ namespace SCP008X
         {
             if(Scp008X.Instance.Config.CassieAnnounce && Scp008X.Instance.Config.Announcement != null) Cassie.Message(Scp008X.Instance.Config.Announcement);
         }
-        
-        public void OnVerified(VerifiedEventArgs ev) => ev.Player.SendConsoleMessage("This server uses SCP-008-X, all zombies have been reworked.", "yellow");
-
         public void OnHurt(HurtingEventArgs ev)
         {
             if (ev.Player == null) return;
@@ -32,12 +29,12 @@ namespace SCP008X
                 ev.Amount = Scp008X.Instance.Config.ZombieDamage;
             }
             
-            if (ev.Player.ArtificialHealth >= 0)
+            if (ev.Player.HumeShield >= 0)
             {
                 ev.IsAllowed = false;
-                if (ev.Player.ArtificialHealth <= ev.Amount) {
-                    var leftover = ev.Amount - ev.Player.ArtificialHealth;
-                    ev.Player.ArtificialHealth = 0;
+                if (ev.Player.HumeShield <= ev.Amount) {
+                    var leftover = ev.Amount - ev.Player.HumeShield;
+                    ev.Player.HumeShield = 0;
                     ev.Player.Health -= leftover;
                 }
             }
